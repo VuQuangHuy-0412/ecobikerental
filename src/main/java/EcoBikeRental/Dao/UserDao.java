@@ -11,7 +11,7 @@ import EcoBikeRental.Entity.MapperUser;
 import EcoBikeRental.Entity.User;
 
 @Repository
-public class HomeDao {
+public class UserDao {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	

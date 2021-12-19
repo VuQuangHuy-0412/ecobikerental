@@ -6,23 +6,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import EcoBikeRental.Dao.HomeDao;
+import EcoBikeRental.Dao.UserDao;
 
 @Controller
 public class HomeController {
 	@Autowired
-	HomeDao homeDao;
+	UserDao userDao;
 
 	@RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView("index");
-		mav.addObject("users", homeDao.getAllUser());
-		return mav;
-	}
-	
-	@RequestMapping(value = "/product", method = RequestMethod.GET)
-	public ModelAndView product() {
-		ModelAndView mav = new ModelAndView("index");
+		mav.addObject("users", userDao.getAllUser());
 		return mav;
 	}
 }
