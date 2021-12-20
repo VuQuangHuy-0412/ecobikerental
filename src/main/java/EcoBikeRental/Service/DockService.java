@@ -35,4 +35,13 @@ public class DockService {
 			return null;
 		}
 	}
+	
+	public List<Dock> getListDockByKeyword(String keyword) {
+		try {
+			List<Dock> listDock = dockDao.getListDockByKeyword(keyword);
+			return listDock;
+		} catch(Exception e) {
+			return null;
+		}
+	}
 }

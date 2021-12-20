@@ -28,4 +28,13 @@ public class DockDao {
 		listProvince = jdbcTemplate.query(sql, new MapperDock());
 		return listProvince;
 	}
+	
+	public List<Dock> getListDockByKeyword(String keyword) {
+		List<Dock> listDocks = new ArrayList<Dock>();
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT * FROM dock d WHERE d.name LIKE '%").append(keyword.trim()).append("%'");
+		String sql = builder.toString();
+		listDocks = jdbcTemplate.query(sql, new MapperDock());
+		return listDocks;
+	}
 }

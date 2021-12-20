@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<title>Dock</title>
+<title>Dock Detail</title>
 <body>
 	<div class="row">
 		<div id="sidebar" class="span3">
@@ -41,11 +41,11 @@
 												<li class="span6" style="height: 350px">
 													<div class="thumbnail">
 														<h4 style="text-align: center;"><b><c:out value="${ dock.name }" /></b></h4>
-														<a class="zoomTool" href="/EcoBikeRental/dock-detail?dockId=<c:out value="${ dock.dockId }" />" title="add to cart">
+														<a class="zoomTool" href="product_details.html" title="add to cart">
 															<span class="icon-search"></span> DETAIL
 														</a> 
 														<a href="#" class="tag"></a> 
-														<a href="/EcoBikeRental/dock-detail?dockId=<c:out value="${ dock.dockId }" />">
+														<a href="product_details.html">
 															<img src="<c:out value="${ dock.image }" />" style="height: 270px" alt="<c:out value="${ dock.name }" />">
 														</a>
 													</div>
