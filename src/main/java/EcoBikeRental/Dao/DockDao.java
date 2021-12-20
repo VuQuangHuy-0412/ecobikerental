@@ -17,8 +17,15 @@ public class DockDao {
 	
 	public List<Dock> getAllDock() {
 		List<Dock> listDocks = new ArrayList<Dock>();
-		String sql = "SELECT * FROM Dock";
+		String sql = "SELECT * FROM dock";
 		listDocks = jdbcTemplate.query(sql, new MapperDock());
 		return listDocks;
+	}
+	
+	public List<Dock> getListDockProvince() {
+		List<Dock> listProvince = new ArrayList<Dock>();
+		String sql = "Select * from dock d group by d.province;";
+		listProvince = jdbcTemplate.query(sql, new MapperDock());
+		return listProvince;
 	}
 }

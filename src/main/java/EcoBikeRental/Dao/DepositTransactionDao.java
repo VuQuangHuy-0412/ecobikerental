@@ -17,7 +17,7 @@ public class DepositTransactionDao {
 	
 	public List<DepositTransaction> getAllDepositTransaction() {
 		List<DepositTransaction> listDepositTransactions = new ArrayList<DepositTransaction>();
-		String sql = "SELECT * FROM DepositTransaction";
+		String sql = "SELECT * FROM deposit_transaction";
 		listDepositTransactions = jdbcTemplate.query(sql, new MapperDepositTransaction());
 		return listDepositTransactions;
 	}

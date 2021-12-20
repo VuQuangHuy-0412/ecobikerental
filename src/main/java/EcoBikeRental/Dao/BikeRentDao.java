@@ -17,7 +17,7 @@ public class BikeRentDao {
 	
 	public List<BikeRent> getAllBikeRent() {
 		List<BikeRent> listBikeRents = new ArrayList<BikeRent>();
-		String sql = "SELECT * FROM user";
+		String sql = "SELECT * FROM bike_rent";
 		listBikeRents = jdbcTemplate.query(sql, new MapperBikeRent());
 		return listBikeRents;
 	}

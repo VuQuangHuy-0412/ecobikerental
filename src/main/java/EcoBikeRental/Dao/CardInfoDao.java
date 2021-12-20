@@ -17,7 +17,7 @@ public class CardInfoDao {
 	
 	public List<CardInfo> getAllCardInfo() {
 		List<CardInfo> listCardInfos = new ArrayList<CardInfo>();
-		String sql = "SELECT * FROM CardInfo";
+		String sql = "SELECT * FROM card_info";
 		listCardInfos = jdbcTemplate.query(sql, new MapperCardInfo());
 		return listCardInfos;
 	}

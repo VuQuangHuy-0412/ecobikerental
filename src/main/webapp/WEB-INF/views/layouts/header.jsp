@@ -34,12 +34,12 @@
 			</a>
 			<div class="nav-collapse">
 				<ul class="nav">
-					<li class="active"><a href="/EcoBikeRental/home" style="text-shadow:  0 0 white; color: black;"><b>Home</b></a></li>
-					<li class=""><a href="/EcoBikeRental/home" style="text-shadow:  0 0 white; color: black;"><b>List View</b></a></li>
-					<li class=""><a href="/EcoBikeRental/home" style="text-shadow:  0 0 white; color: black;"><b>Grid View</b></a></li>
-					<li class=""><a href="/EcoBikeRental/home" style="text-shadow:  0 0 white; color: black;"><b>Three Column</b></a></li>
-					<li class=""><a href="/EcoBikeRental/home" style="text-shadow:  0 0 white; color: black;"><b>Four Column</b></a></li>
-					<li class=""><a href="/EcoBikeRental/home" style="text-shadow:  0 0 white; color: black;"><b>General Content</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/" style="text-shadow:  0 0 white; color: black;"><b>Home</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/list-dock" style="text-shadow:  0 0 white; color: black;"><b>List Dock</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>Grid View</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>Three Column</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>Four Column</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>General Content</b></a></li>
 				</ul>
 				<form action="#" class="navbar-search pull-right" style="margin-right: 10px">
 					<input type="text" placeholder="Search" class="search-query span2">

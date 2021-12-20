@@ -7,6 +7,8 @@ public class Dock {
 	private String description;
 	private String createdAt;
 	private String updatedAt;
+	private String province;
+	private String image;
 
 	public Dock() {
 		super();
@@ -59,5 +61,21 @@ public class Dock {
 
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

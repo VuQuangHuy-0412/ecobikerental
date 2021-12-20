@@ -15,6 +15,8 @@ public class MapperDock implements RowMapper<Dock>{
 		dock.setDescription(rs.getString("description"));
 		dock.setCreatedAt(rs.getString("created_at"));
 		dock.setUpdatedAt(rs.getString("updated_at"));
+		dock.setProvince(rs.getString("province"));
+		dock.setImage(rs.getString("image"));
 		return dock;
 	}
 

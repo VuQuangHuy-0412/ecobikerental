@@ -6,22 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import EcoBikeRental.Dao.UserDao;
 import EcoBikeRental.Service.DockService;
 
 @Controller
-public class HomeController {
-	@Autowired
-	UserDao userDao;
-	
+public class DockController {
 	@Autowired
 	DockService dockService;
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index() {
-		ModelAndView mav = new ModelAndView("index");
-		mav.addObject("users", userDao.getAllUser());
+	
+	@RequestMapping(value = "/list-dock", method = RequestMethod.GET)
+	public ModelAndView showListDocks() {
+		ModelAndView mav = new ModelAndView("show_list_dock");
 		mav.addObject("provinces", dockService.getListDockProvince());
+		mav.addObject("docks", dockService.getAllDock());
 		return mav;
 	}
 }

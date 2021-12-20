@@ -17,7 +17,7 @@ public class DockHasBikeDao {
 	
 	public List<DockHasBike> getAllDockHasBike() {
 		List<DockHasBike> listDockHasBikes = new ArrayList<DockHasBike>();
-		String sql = "SELECT * FROM DockHasBike";
+		String sql = "SELECT * FROM dock_has_bike";
 		listDockHasBikes = jdbcTemplate.query(sql, new MapperDockHasBike());
 		return listDockHasBikes;
 	}

@@ -17,7 +17,7 @@ public class PaymentTransactionDao {
 	
 	public List<PaymentTransaction> getAllPaymentTransaction() {
 		List<PaymentTransaction> listPaymentTransactions = new ArrayList<PaymentTransaction>();
-		String sql = "SELECT * FROM PaymentTransaction";
+		String sql = "SELECT * FROM payment_transaction";
 		listPaymentTransactions = jdbcTemplate.query(sql, new MapperPaymentTransaction());
 		return listPaymentTransactions;
 	}

@@ -17,7 +17,7 @@ public class BikeReturnDao {
 	
 	public List<BikeReturn> getAllBikeReturn() {
 		List<BikeReturn> listBikeReturns = new ArrayList<BikeReturn>();
-		String sql = "SELECT * FROM BikeReturn";
+		String sql = "SELECT * FROM bike_return";
 		listBikeReturns = jdbcTemplate.query(sql, new MapperBikeReturn());
 		return listBikeReturns;
 	}
