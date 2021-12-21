@@ -21,4 +21,13 @@ public class BikeCategoryDao {
 		listBikeCategorys = jdbcTemplate.query(sql, new MapperBikeCategory());
 		return listBikeCategorys;
 	}
+	
+	public BikeCategory getCategoryById(Integer categoryId) {
+		BikeCategory category = new BikeCategory();
+		StringBuilder builder = new StringBuilder();
+		builder.append("Select * from bike_category bc where bc.category_id = ").append(categoryId);
+		String sql = builder.toString();
+		category = jdbcTemplate.queryForObject(sql, new MapperBikeCategory());
+		return category;
+	}
 }

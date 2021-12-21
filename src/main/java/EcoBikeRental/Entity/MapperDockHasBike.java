@@ -15,6 +15,9 @@ public class MapperDockHasBike implements RowMapper<DockHasBike>{
 		dockHasBike.setDescription(rs.getString("description"));
 		dockHasBike.setStatus(rs.getInt("status"));
 		dockHasBike.setDockId(rs.getInt("dock_id"));
+		dockHasBike.setActive(rs.getInt("active"));
+		dockHasBike.setPoint(rs.getInt("point"));
+		dockHasBike.setBarcode(rs.getString("barcode"));
 		return dockHasBike;
 	}
 

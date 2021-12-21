@@ -11,8 +11,9 @@ public class MapperBikeCategory implements RowMapper<BikeCategory>{
 		BikeCategory bikeCategory = new BikeCategory();
 		bikeCategory.setCategoryId(rs.getInt("category_id"));
 		bikeCategory.setName(rs.getString("name"));
-		bikeCategory.setDescription(rs.getString("desription"));
+		bikeCategory.setDescription(rs.getString("description"));
 		bikeCategory.setPrice(rs.getInt("price"));
+		bikeCategory.setImage(rs.getString("image"));
 		return bikeCategory;
 	}
 

@@ -5,6 +5,7 @@ public class BikeCategory {
 	private String name;
 	private String description;
 	private Integer price;
+	private String image;
 
 	public BikeCategory() {
 		super();
@@ -43,4 +44,11 @@ public class BikeCategory {
 		this.price = price;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 }

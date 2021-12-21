@@ -16,6 +16,7 @@ public class MapperUser implements RowMapper<User>{
 		user.setStatus(rs.getInt("status"));
 		user.setCreatedAt(rs.getString("created_at"));
 		user.setUpdatedAt(rs.getString("updated_at"));
+		user.setIsRenting(rs.getInt("is_renting"));
 		return user;
 	}
 

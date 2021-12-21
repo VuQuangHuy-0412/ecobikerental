@@ -37,4 +37,13 @@ public class DockDao {
 		listDocks = jdbcTemplate.query(sql, new MapperDock());
 		return listDocks;
 	}
+	
+	public Dock getDockByDockId(Integer dockId) {
+		Dock dock = new Dock();
+		StringBuilder builder = new StringBuilder();
+		builder.append("Select * from dock d where d.dock_id = ").append(dockId);
+		String sql = builder.toString();
+		dock = jdbcTemplate.queryForObject(sql, new MapperDock());
+		return dock;
+	}
 }

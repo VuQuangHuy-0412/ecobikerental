@@ -36,7 +36,7 @@
 				<ul class="nav">
 					<li class="menu"><a href="/EcoBikeRental/" style="text-shadow:  0 0 white; color: black;"><b>Home</b></a></li>
 					<li class="menu"><a href="/EcoBikeRental/list-dock" style="text-shadow:  0 0 white; color: black;"><b>List Dock</b></a></li>
-					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>Grid View</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/rent-bike" style="text-shadow:  0 0 white; color: black;"><b>Rent Bike</b></a></li>
 					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>Three Column</b></a></li>
 					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>Four Column</b></a></li>
 					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>General Content</b></a></li>

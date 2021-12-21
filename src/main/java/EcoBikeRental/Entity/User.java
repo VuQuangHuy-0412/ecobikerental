@@ -8,6 +8,7 @@ public class User {
 	private Integer status;
 	private String createdAt;
 	private String updatedAt;
+	private Integer isRenting;
 
 	public User() {
 		super();
@@ -68,5 +69,13 @@ public class User {
 
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public Integer getIsRenting() {
+		return isRenting;
+	}
+
+	public void setIsRenting(Integer isRenting) {
+		this.isRenting = isRenting;
 	}
 }

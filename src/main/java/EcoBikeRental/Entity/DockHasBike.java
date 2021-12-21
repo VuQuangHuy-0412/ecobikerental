@@ -7,6 +7,9 @@ public class DockHasBike {
 	private Integer bikeId;
 	private Integer status;
 	private String description;
+	private Integer active;
+	private Integer point;
+	private String barcode;
 
 	public DockHasBike() {
 		super();
@@ -59,5 +62,29 @@ public class DockHasBike {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
+	}
+
+	public Integer getPoint() {
+		return point;
+	}
+
+	public void setPoint(Integer point) {
+		this.point = point;
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
 	}
 }

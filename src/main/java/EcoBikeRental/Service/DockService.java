@@ -44,4 +44,13 @@ public class DockService {
 			return null;
 		}
 	}
+	
+	public Dock getDockByDockId(Integer dockId) {
+		try {
+			Dock dock = dockDao.getDockByDockId(dockId);
+			return dock;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

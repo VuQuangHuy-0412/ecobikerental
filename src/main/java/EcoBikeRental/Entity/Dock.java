@@ -9,6 +9,7 @@ public class Dock {
 	private String updatedAt;
 	private String province;
 	private String image;
+	private Integer pointNumber;
 
 	public Dock() {
 		super();
@@ -77,5 +78,13 @@ public class Dock {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public Integer getPointNumber() {
+		return pointNumber;
+	}
+
+	public void setPointNumber(Integer pointNumber) {
+		this.pointNumber = pointNumber;
 	}
 }
