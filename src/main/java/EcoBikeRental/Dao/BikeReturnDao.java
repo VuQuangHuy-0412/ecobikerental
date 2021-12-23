@@ -21,4 +21,13 @@ public class BikeReturnDao {
 		listBikeReturns = jdbcTemplate.query(sql, new MapperBikeReturn());
 		return listBikeReturns;
 	}
+	
+	public List<BikeReturn> getBikeReturnByRentId(Integer rentId) {
+		List<BikeReturn> bikeReturn = new ArrayList<BikeReturn>();
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT * FROM bike_return br WHERE br.rent_id = ").append(rentId);
+		String sql = builder.toString();
+		bikeReturn = jdbcTemplate.query(sql, new MapperBikeReturn());
+		return bikeReturn;
+	}
 }

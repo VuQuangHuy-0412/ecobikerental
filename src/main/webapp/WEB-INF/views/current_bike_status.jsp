@@ -2,10 +2,21 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<title>Confirm Rent Bike</title>
+<title>Current Bike Status</title>
 <body>
+<c:if test="${ bikeId != -1 }">
 	<div class="row">
-		<div class="span12" style="margin-left: 40px;">
+		<div class="span5">
+			<div class="well well-small">
+				<figure>
+					<img src="${ category.image }" style="height: 270px; width: 300px;" alt="${ category.name }">
+					<figcaption style="margin-top: 5px; text-align: center;">
+						<c:out value="${ category.name }" /> - <c:out value="${ bike.bikeId }" />
+					</figcaption>
+				</figure>
+			</div>
+		</div>
+		<div class="span7">
 			<div class="well well-small row" style="background-color: cornflowerblue;">
 				<h3>Bike Information</h3>
 			</div>
@@ -45,30 +56,9 @@
                         
                         <tr>
                             <td class="span3">
-                                <label><b>Current Dock</b></label>
-                            </td>
-                            <td><c:out value="${ dock.name }"></c:out></td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="span3">
-                                <label><b>Point</b></label>
-                            </td>
-                            <td><c:out value="${ bike.point }"></c:out></td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="span3">
                                 <label><b>Status</b></label>
                             </td>
                             <td><c:out value="${ bike.status }" /> %</td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="span3">
-                                <label><b>Deposit Money</b></label>
-                            </td>
-                            <td><c:out value="${ category.price }" /> VND</td>
                         </tr>
                         </tbody>
                         </table>
@@ -77,11 +67,28 @@
         	</div>
 			<div class="row">
 				<div class="span3">&nbsp;</div>
-				<div class="span4">
-					<button style="background-color: darkgray;" onclick="window.location.href='/EcoBikeRental/process-rent?bikeId=<c:out value="${ bike.bikeId }" />'"><b>Confirm To Rent This Bike</b></button>
+				<div class="span2">
+					<button style="background-color: darkgray;" onclick="window.location.href='/EcoBikeRental/confirm-rent-bike?bikeId=<c:out value="${ bike.bikeId }" />'"><b>Return This Bike</b></button>
 				</div>
 				<div class="span2">&nbsp;</div>
 			</div>
 		</div>
 	</div>
+</c:if>
+<c:if test="${ bikeId == -1 }">
+	<div class="row">
+		<div class="span12" style="margin-left: 40px;">
+			<div class="well well-small row" style="background-color: coral;">
+				<h3>You haven't rented a bike yet</h3>
+			</div>
+			<div class="row">
+				<div class="span4">&nbsp;</div>
+				<div class="span4">
+					<button style="background-color: darkgray;" onClick="window.location.href='/EcoBikeRental/rent-bike"><b>Rent A Bike</b></button>
+				</div>
+				<div class="span2">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+</c:if>
 </body>

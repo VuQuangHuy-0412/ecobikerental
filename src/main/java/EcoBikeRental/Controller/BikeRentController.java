@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import EcoBikeRental.Entity.DockHasBike;
+import EcoBikeRental.Service.BikeRentService;
 import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
 
@@ -18,6 +19,9 @@ public class BikeRentController {
 	
 	@Autowired
 	DockService dockService;
+	
+	@Autowired
+	BikeRentService bikeRentService;
 	
 	@RequestMapping(value = "/confirm-rent-bike", method = RequestMethod.GET)
 	public ModelAndView comfirmRentBike(@RequestParam("bikeId") Integer bikeId) {
@@ -50,6 +54,13 @@ public class BikeRentController {
 		} else {
 			mav.setViewName("not_found_bike");
 		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "/process-rent", method = RequestMethod.GET)
+	public ModelAndView processRent(@RequestParam("bikeId") Integer bikeId) {
+		ModelAndView mav = new ModelAndView("process-rent");
+		mav.addObject("status", bikeRentService.processRent(bikeId));
 		return mav;
 	}
 }

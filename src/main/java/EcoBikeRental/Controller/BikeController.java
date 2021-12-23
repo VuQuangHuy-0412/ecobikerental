@@ -28,4 +28,20 @@ public class BikeController {
 //		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
 		return mav;
 	}
+	
+	@RequestMapping(value = "/current-bike-status", method = RequestMethod.GET)
+	public ModelAndView showBikeDetail() {
+		ModelAndView mav = new ModelAndView();
+		Integer bikeId = bikeService.getCurrentBikeId();
+		mav.addObject("bikeId", bikeId);
+		if (bikeId != -1) {
+			mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
+			mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
+			mav.addObject("dock", dockService.getDockByDockId(bikeService.getBikeByBikeId(bikeId).getDockId()));
+			mav.addObject("barcode", Integer.toBinaryString(bikeId));
+	//		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
+		} 
+		mav.setViewName("current_bike_status");
+		return mav;
+	}
 }

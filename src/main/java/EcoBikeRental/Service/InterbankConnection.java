@@ -1,5 +1,7 @@
 package EcoBikeRental.Service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,11 +13,14 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import EcoBikeRental.Dto.BodyToConvertMD5Dto;
 import EcoBikeRental.Dto.RequestProcessTransactionDto;
 import EcoBikeRental.Dto.RequestResetBalanceDto;
 import EcoBikeRental.Dto.RequestTransactionDto;
+import EcoBikeRental.Dto.TransactionToConvertMD5Dto;
 @Service
 public class InterbankConnection {
 	CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -28,8 +33,9 @@ public class InterbankConnection {
 	private final String DATE_EXPIRED = "1125";
 	private final String OWNER = "Group 12";
 	private final String APP_CODE = "Cn2iBu0JxIc=";
+	private final String SECRET_KEY = "Cn2iBu0JxIc=";
 	
-	public void processTransaction(String command, Long amount, String transactionContent) {
+	public JsonNode processTransaction(String command, Long amount, String transactionContent) {
 		try {
 			HttpPatch post = new HttpPatch(URL_PROCESS_TRANSACTION);
 			
@@ -49,9 +55,24 @@ public class InterbankConnection {
 			transaction.setTransactionContent(transactionContent);
 			body.setTransaction(transaction);
 			body.setAppCode(APP_CODE);
-			body.setHashCode("hashCode");
+			
+			BodyToConvertMD5Dto bodyHashCode = new BodyToConvertMD5Dto();
+			bodyHashCode.setSecretKey(SECRET_KEY);
+			TransactionToConvertMD5Dto bodyTransaction = new TransactionToConvertMD5Dto();
+			bodyTransaction.setCommand(command);
+			bodyTransaction.setAmount(amount);
+			bodyTransaction.setCardCode(CARD_CODE);
+			bodyTransaction.setCvvCode(CVV_CODE);
+			bodyTransaction.setDateExpired(DATE_EXPIRED);
+			bodyTransaction.setOwner(OWNER);
+			bodyTransaction.setTransactionContent(transactionContent);
+			bodyHashCode.setTransaction(bodyTransaction);
 			
 			ObjectMapper mapper = new ObjectMapper();
+			
+			String hashCode = MD5String(mapper.writeValueAsString(bodyHashCode));
+			
+			body.setHashCode(hashCode);
 			
 			post.setHeader("Content-Type", "application/json");
 			post.setEntity(new StringEntity(mapper.writeValueAsString(body)));
@@ -59,13 +80,16 @@ public class InterbankConnection {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpClient.execute(post);
 			String result = EntityUtils.toString(response.getEntity());
-			System.out.println(result);
+			
+			JsonNode resultJson = mapper.readTree(result);
+			return resultJson;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			return null;
 		}
 	}
 	
-	public void resetBalance() {
+	public JsonNode resetBalance() {
 		try {
 			HttpPatch post = new HttpPatch(URL_RESET_BALANCE);
 			
@@ -83,9 +107,25 @@ public class InterbankConnection {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpClient.execute(post);
 			String result = EntityUtils.toString(response.getEntity());
-			System.out.println(result);
+			
+			JsonNode resultJson = mapper.readTree(result);
+			return resultJson;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			return null;
 		}
 	}
+	
+	public String MD5String(String input) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(input.getBytes());
+		byte byteData[] = md.digest();
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < byteData.length; i++) {
+			sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16)
+					.substring(1));
+		}
+		return sb.toString();
+	}
+
 }

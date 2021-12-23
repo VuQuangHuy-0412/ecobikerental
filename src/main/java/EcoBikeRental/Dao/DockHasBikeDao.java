@@ -34,7 +34,7 @@ public class DockHasBikeDao {
 	public DockHasBike getBikeByBikeId(Integer bikeId) {
 		DockHasBike bike = new DockHasBike();
 		StringBuilder builder = new StringBuilder();
-		builder.append("Select * from dock_has_bike dhb where dhb.bike_id = ").append(bikeId);
+		builder.append("Select * from dock_has_bike dhb where dhb.bike_id = ").append(bikeId).append(" AND dhb.active = 1;");
 		String sql = builder.toString();
 		bike = jdbcTemplate.queryForObject(sql, new MapperDockHasBike());
 		return bike;

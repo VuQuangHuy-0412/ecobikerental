@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import EcoBikeRental.Dao.BikeCategoryDao;
+import EcoBikeRental.Dao.BikeRentDao;
+import EcoBikeRental.Dao.BikeReturnDao;
 import EcoBikeRental.Dao.DockHasBikeDao;
 import EcoBikeRental.Dto.NumberOfBikeCategoryDto;
 import EcoBikeRental.Entity.BikeCategory;
+import EcoBikeRental.Entity.BikeReturn;
 import EcoBikeRental.Entity.DockHasBike;
 
 @Service
@@ -19,6 +22,12 @@ public class BikeService {
 	
 	@Autowired
 	BikeCategoryDao bikeCategoryDao;
+	
+	@Autowired
+	BikeReturnDao bikeReturnDao;
+	
+	@Autowired
+	BikeRentDao bikeRentDao;
 	
 	public List<DockHasBike> getListBikeByDockId(Integer dockId) {
 		try {
@@ -83,6 +92,15 @@ public class BikeService {
 			return bike;
 		} catch (Exception e) {
 			return null;
+		}
+	}
+	
+	public Integer getCurrentBikeId() {
+		List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(bikeRentDao.getLastBikeRent().getRentId());
+		if (bikeReturn.isEmpty() == false) {
+			return -1;
+		} else {
+			return bikeRentDao.getLastBikeRent().getBikeId();
 		}
 	}
 }

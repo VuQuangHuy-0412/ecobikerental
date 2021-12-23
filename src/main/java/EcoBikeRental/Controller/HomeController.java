@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import EcoBikeRental.Dao.UserDao;
+import EcoBikeRental.Service.BikeRentService;
 import EcoBikeRental.Service.BikeService;
+import EcoBikeRental.Service.InterbankConnection;
 
 @Controller
 public class HomeController {
@@ -16,12 +18,16 @@ public class HomeController {
 	
 	@Autowired
 	BikeService bikeService;
+	
+	@Autowired
+	BikeRentService bikeRentService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView("index");
 		mav.addObject("users", userDao.getAllUser());
 		mav.addObject("listBikes", bikeService.getListBikeByDockId(1));
+		bikeRentService.processRent(1000);
 		return mav;
 	}
 }

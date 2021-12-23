@@ -21,4 +21,18 @@ public class DepositTransactionDao {
 		listDepositTransactions = jdbcTemplate.query(sql, new MapperDepositTransaction());
 		return listDepositTransactions;
 	}
+	
+	public DepositTransaction saveDepositTransaction(DepositTransaction depositTransaction) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("INSERT INTO deposit_transaction (rent_id, money_amount, created_at, description, status, deposit_by) VALUES (")
+			.append(depositTransaction.getRentId()).append(",")
+			.append(depositTransaction.getMoneyAmount()).append(",'")
+			.append(depositTransaction.getCreatedAt()).append("','")
+			.append(depositTransaction.getDescription()).append("','")
+			.append(depositTransaction.getStatus()).append("','")
+			.append(depositTransaction.getDepositBy()).append("')");
+		String sql = builder.toString();
+		jdbcTemplate.update(sql);
+		return depositTransaction;
+	}
 }
