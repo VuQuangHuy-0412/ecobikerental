@@ -44,6 +44,7 @@ public class BikeService {
 			List<NumberOfBikeCategoryDto> listCount = new ArrayList<NumberOfBikeCategoryDto>();
 			List<BikeCategory> listCategory = bikeCategoryDao.getAllBikeCategory();
 			
+			// count number of each category bike
 			for (BikeCategory e : listCategory) {
 				NumberOfBikeCategoryDto numberOfBikeCategoryDto = new NumberOfBikeCategoryDto();
 				numberOfBikeCategoryDto.setBikeCategory(e);

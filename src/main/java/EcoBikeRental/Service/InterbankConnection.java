@@ -23,8 +23,10 @@ import EcoBikeRental.Dto.RequestTransactionDto;
 import EcoBikeRental.Dto.TransactionToConvertMD5Dto;
 @Service
 public class InterbankConnection {
+	//init httpclient variable
 	CloseableHttpClient httpclient = HttpClients.createDefault();
 	
+	// init some const variable to connect with interbank
 	private final String URL_PROCESS_TRANSACTION = "https://ecopark-system-api.herokuapp.com/api/card/processTransaction";
 	private final String URL_RESET_BALANCE = "https://ecopark-system-api.herokuapp.com/api/card/reset-balance";
 	private final String VERSION = "1.0.1";
@@ -39,6 +41,7 @@ public class InterbankConnection {
 		try {
 			HttpPatch post = new HttpPatch(URL_PROCESS_TRANSACTION);
 			
+			// build the body url
 			RequestProcessTransactionDto body = new RequestProcessTransactionDto();
 			body.setVersion(VERSION);
 			RequestTransactionDto transaction = new RequestTransactionDto();
@@ -56,8 +59,10 @@ public class InterbankConnection {
 			body.setTransaction(transaction);
 			body.setAppCode(APP_CODE);
 			
+			//convert hashkey md5
 			BodyToConvertMD5Dto bodyHashCode = new BodyToConvertMD5Dto();
 			bodyHashCode.setSecretKey(SECRET_KEY);
+			
 			TransactionToConvertMD5Dto bodyTransaction = new TransactionToConvertMD5Dto();
 			bodyTransaction.setCommand(command);
 			bodyTransaction.setAmount(amount);
@@ -74,13 +79,18 @@ public class InterbankConnection {
 			
 			body.setHashCode(hashCode);
 			
+			//set header patch method
 			post.setHeader("Content-Type", "application/json");
+			
+			//set body
 			post.setEntity(new StringEntity(mapper.writeValueAsString(body)));
 			
+			//get the response
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpClient.execute(post);
 			String result = EntityUtils.toString(response.getEntity());
 			
+			//convert respronse to json
 			JsonNode resultJson = mapper.readTree(result);
 			return resultJson;
 		} catch (Exception e) {
@@ -91,8 +101,10 @@ public class InterbankConnection {
 	
 	public JsonNode resetBalance() {
 		try {
+			//set URL patch method
 			HttpPatch post = new HttpPatch(URL_RESET_BALANCE);
 			
+			//set body
 			RequestResetBalanceDto body = new RequestResetBalanceDto();
 			body.setCardCode(CARD_CODE);
 			body.setCvvCode(CVV_CODE);
@@ -101,13 +113,16 @@ public class InterbankConnection {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			
+			//set header patch method
 			post.setHeader("Content-Type", "application/json");
 			post.setEntity(new StringEntity(mapper.writeValueAsString(body)));
 			
+			// get response of url
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			CloseableHttpResponse response = httpClient.execute(post);
 			String result = EntityUtils.toString(response.getEntity());
 			
+			// convert response to json
 			JsonNode resultJson = mapper.readTree(result);
 			return resultJson;
 		} catch (Exception e) {
@@ -116,6 +131,7 @@ public class InterbankConnection {
 		}
 	}
 	
+	//convert a string to MD5 Hash
 	public String MD5String(String input) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(input.getBytes());

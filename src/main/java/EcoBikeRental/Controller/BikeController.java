@@ -21,11 +21,14 @@ public class BikeController {
 	@RequestMapping(value = "/bike-detail", method = RequestMethod.GET)
 	public ModelAndView showBikeDetail(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("bike_detail");
+		
+		//add data bike, category, dock and barcode to show view
 		mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
 		mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
 		mav.addObject("dock", dockService.getDockByDockId(bikeService.getBikeByBikeId(bikeId).getDockId()));
 		mav.addObject("barcode", Integer.toBinaryString(bikeId));
 //		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
+		
 		return mav;
 	}
 	
@@ -34,6 +37,8 @@ public class BikeController {
 		ModelAndView mav = new ModelAndView();
 		Integer bikeId = bikeService.getCurrentBikeId();
 		mav.addObject("bikeId", bikeId);
+		
+		//check that you are renting bike or not
 		if (bikeId != -1) {
 			mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
 			mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
@@ -41,6 +46,7 @@ public class BikeController {
 			mav.addObject("barcode", Integer.toBinaryString(bikeId));
 	//		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
 		} 
+		
 		mav.setViewName("current_bike_status");
 		return mav;
 	}

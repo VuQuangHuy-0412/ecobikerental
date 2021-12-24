@@ -26,8 +26,10 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView("show_list_dock");
+		
 		mav.addObject("provinces", dockService.getListDockProvince());
 		mav.addObject("docks", dockService.getAllDock());
+		
 		return mav;
 	}
 }

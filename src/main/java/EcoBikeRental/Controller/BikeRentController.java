@@ -26,11 +26,14 @@ public class BikeRentController {
 	@RequestMapping(value = "/confirm-rent-bike", method = RequestMethod.GET)
 	public ModelAndView comfirmRentBike(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("rent_bike");
+		
+		//add bike detail to show to view
 		mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
 		mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
 		mav.addObject("dock", dockService.getDockByDockId(bikeService.getBikeByBikeId(bikeId).getDockId()));
 		mav.addObject("barcode", Integer.toBinaryString(bikeId));
 //		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
+		
 		return mav;
 	}
 	
@@ -46,6 +49,8 @@ public class BikeRentController {
 	public ModelAndView rentBike(@RequestParam("barcode") String barcode) {
 		ModelAndView mav = new ModelAndView();
 		DockHasBike bike = bikeService.getBikeByBarcode(barcode);
+		
+		//check that you are renting bike or not
 		if (bike != null) {
 			mav.setViewName("rent_bike");
 			Integer bikeId = bike.getBikeId();
@@ -56,13 +61,16 @@ public class BikeRentController {
 		} else {
 			mav.setViewName("not_found_bike");
 		}
+		
 		return mav;
 	}
 	
 	@RequestMapping(value = "/process-rent", method = RequestMethod.GET)
 	public ModelAndView processRent(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("process-rent");
+		
 		mav.addObject("status", bikeRentService.processRent(bikeId));
+		
 		return mav;
 	}
 }

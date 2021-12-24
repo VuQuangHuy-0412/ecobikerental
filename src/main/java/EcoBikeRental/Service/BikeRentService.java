@@ -40,8 +40,11 @@ public class BikeRentService {
 	
 	public String processRent(Integer bikeId) {
 		try {
+			//check if you have not rented bike yet
 			if (bikeRentDao.getLastBikeRent().isEmpty() == false) {
 				List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
+				
+				// check if you are renting bike
 				if (bikeReturn.isEmpty() == false) {
 					// save bike rent
 					BikeRent bikeRent = new BikeRent();

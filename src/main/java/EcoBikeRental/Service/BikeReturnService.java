@@ -45,9 +45,13 @@ public class BikeReturnService {
 		try {
 			BikeRent bikeRent = bikeRentDao.getLastBikeRent().get(0);
 			
+			// get rent time and return time
 			String rentTime = bikeRent.getRentTime();
 			long allRentTime = calculateTime(rentTime);
 			
+			// if rent time < 10 mins, fee = 0
+			// if rent time < 30 mins, fee = 10000
+			// if rent time > 30 mins, fee += 3000 each 15 mins
 			if (allRentTime <= 600) {
 				return (long) 0;
 			} else {

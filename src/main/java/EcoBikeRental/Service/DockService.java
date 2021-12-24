@@ -18,6 +18,8 @@ public class DockService {
 		try {
 			List<String> listProvince = new ArrayList<String>();
 			List<Dock> listDockProvince = dockDao.getListDockProvince();
+			
+			// get list province of system
 			for (Dock dock : listDockProvince) {
 				listProvince.add(dock.getProvince());
 			}
