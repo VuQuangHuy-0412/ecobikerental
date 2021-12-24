@@ -1,5 +1,9 @@
 package EcoBikeRental.Dto;
 
+/**
+ * Description: Class Dto contain transaction of body to convert to MD5
+ *
+ */
 public class TransactionToConvertMD5Dto {
 	private String command;
 	private String cardCode;

@@ -12,6 +12,10 @@ import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
 import EcoBikeRental.Service.InterbankConnection;
 
+/**
+ * Description: Controller manage the action of home
+ *
+ */
 @Controller
 public class HomeController {
 	@Autowired

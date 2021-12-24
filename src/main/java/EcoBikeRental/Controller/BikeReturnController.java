@@ -12,6 +12,10 @@ import EcoBikeRental.Service.BikeReturnService;
 import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
 
+/**
+ * Description: Controller manage the action of returning bike 
+ *
+ */
 @Controller
 public class BikeReturnController {
 	
@@ -27,6 +31,10 @@ public class BikeReturnController {
 	@Autowired
 	BikeReturnService bikeReturnService;
 	
+	/**
+	 * Description: method add data bike, category, listDocks show to the view return_bike
+	 * @return ModelAndView: Model to show to view and redirect to the view return_bike.jsp
+	 */
 	@RequestMapping(value = "/return-bike", method = RequestMethod.GET)
 	public ModelAndView returnBike() {
 		ModelAndView mav = new ModelAndView("return_bike");
@@ -44,6 +52,12 @@ public class BikeReturnController {
 		return mav;
 	}
 	
+	/**
+	 * Description: method add data bike, category, dock, paymentAmount show to the view confirm_return_bike
+	 * @param bikeId: id of the bike want to return
+	 * @param dockId: id of the dock you want to return to
+	 * @return ModelAndView: Model to show to view and redirect to the view confirm_return_bike.jsp
+	 */
 	@RequestMapping(value = "/confirm-return-bike", method = RequestMethod.GET)
 	public ModelAndView confirmReturnBike(@RequestParam("bikeId") Integer bikeId, @RequestParam("dockId") Integer dockId) { 
 		ModelAndView mav = new ModelAndView("confirm_return_bike");
@@ -56,6 +70,13 @@ public class BikeReturnController {
 		return mav;
 	}
 	
+	/**
+	 * @param bikeId: id of the bike want to return
+	 * @param dockId: id of the dock you want to return to
+	 * @param point: the point you want to return to
+	 * @param refundAmount: the money system return to renter
+	 * @return ModelAndView: Model to show to view and redirect to the view return_bike.jsp
+	 */
 	@RequestMapping(value = "/process-return", method = RequestMethod.GET) 
 	public ModelAndView processReturn(@RequestParam("bikeId") Integer bikeId, @RequestParam("dockId") Integer dockId, @RequestParam("point") Integer point, @RequestParam("refundAmount") Long refundAmount) {
 		ModelAndView mav = new ModelAndView("process_return");

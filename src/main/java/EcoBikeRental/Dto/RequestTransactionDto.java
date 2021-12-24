@@ -1,5 +1,9 @@
 package EcoBikeRental.Dto;
 
+/**
+ * Description: Class Dto contain info of transaction of body to send request to Interbank
+ *
+ */
 public class RequestTransactionDto {
 	private String command;
 	private String cardCode;

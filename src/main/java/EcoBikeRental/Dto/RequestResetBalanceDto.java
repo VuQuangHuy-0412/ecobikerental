@@ -1,5 +1,9 @@
 package EcoBikeRental.Dto;
 
+/**
+ * Description: Class Dto contain body of request reset balance of url of interbank
+ *
+ */
 public class RequestResetBalanceDto {
 	private String cardCode;
 	private String owner;

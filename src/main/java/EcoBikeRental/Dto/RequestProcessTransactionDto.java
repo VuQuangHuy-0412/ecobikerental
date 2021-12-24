@@ -1,5 +1,9 @@
 package EcoBikeRental.Dto;
 
+/**
+ * Description: Class Dto contain body of api process transaction of interbank
+ *
+ */
 public class RequestProcessTransactionDto {
 	private String version;
 	private RequestTransactionDto transaction;

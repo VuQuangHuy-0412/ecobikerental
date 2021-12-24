@@ -18,6 +18,10 @@ import EcoBikeRental.Entity.BikeReturn;
 import EcoBikeRental.Entity.DepositTransaction;
 import EcoBikeRental.Entity.DockHasBike;
 
+/**
+ * Description: Class Service to execute the action logic rent bike
+ *
+ */
 @Service
 public class BikeRentService {
 	@Autowired
@@ -38,6 +42,11 @@ public class BikeRentService {
 	@Autowired
 	DockHasBikeDao dockHasBikeDao;
 	
+	/**
+	 * Description: process the request rent bike
+	 * @param bikeId: id of the bike want to rent
+	 * @return String: status success or fail
+	 */
 	public String processRent(Integer bikeId) {
 		try {
 			//check if you have not rented bike yet

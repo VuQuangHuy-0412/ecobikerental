@@ -12,6 +12,10 @@ import EcoBikeRental.Service.BikeRentService;
 import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
 
+/**
+ * Description: Controller manage the action of renting bike 
+ *
+ */
 @Controller
 public class BikeRentController {
 	@Autowired
@@ -23,6 +27,11 @@ public class BikeRentController {
 	@Autowired
 	BikeRentService bikeRentService;
 	
+	/**
+	 * Description: method add data bike, category, dock show to the view rent_bike
+	 * @param bikeId: id of the bike confirm to rent
+	 * @return ModelAndView: Model to show to view and redirect to the view rent_bike.jsp
+	 */
 	@RequestMapping(value = "/confirm-rent-bike", method = RequestMethod.GET)
 	public ModelAndView comfirmRentBike(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("rent_bike");
@@ -37,6 +46,10 @@ public class BikeRentController {
 		return mav;
 	}
 	
+	/**
+	 * Description: method add data bikeId show to the view choose_bike_rent
+	 * @return ModelAndView: Model to show to view and redirect to the view choose_bike_rent.jsp
+	 */
 	@RequestMapping(value = "/rent-bike", method = RequestMethod.GET)
 	public ModelAndView rentBike() {
 		ModelAndView mav = new ModelAndView("choose_bike_rent");
@@ -45,6 +58,11 @@ public class BikeRentController {
 		return mav;
 	}
 	
+	/**
+	 * Description: method add data bike, category, dock show to the view rent_bike
+	 * @param barcode: the barcode of the bike you want to rent
+	 * @return ModelAndView: Model to show to view and redirect to the view rent_bike.jsp
+	 */
 	@RequestMapping(value = "/rent-bike-with-barcode", method = RequestMethod.GET)
 	public ModelAndView rentBike(@RequestParam("barcode") String barcode) {
 		ModelAndView mav = new ModelAndView();
@@ -65,6 +83,10 @@ public class BikeRentController {
 		return mav;
 	}
 	
+	/**
+	 * @param bikeId: the id of the bike you want to rent
+	 * @return ModelAndView: Model to show to view and redirect to the view process-rent.jsp
+	 */
 	@RequestMapping(value = "/process-rent", method = RequestMethod.GET)
 	public ModelAndView processRent(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("process-rent");

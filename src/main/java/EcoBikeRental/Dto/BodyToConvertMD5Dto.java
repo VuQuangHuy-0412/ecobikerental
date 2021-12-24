@@ -1,5 +1,9 @@
 package EcoBikeRental.Dto;
 
+/**
+ * Description: class Dto contain the body of hashCode to convert to MD5
+ *
+ */
 public class BodyToConvertMD5Dto {
 	private String secretKey;
 	private TransactionToConvertMD5Dto transaction;

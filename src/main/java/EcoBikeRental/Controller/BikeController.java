@@ -10,6 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
 import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
 
+/**
+ * Description: class bike controller manage the action of bike
+ *
+ */
 @Controller
 public class BikeController {
 	@Autowired
@@ -18,6 +22,11 @@ public class BikeController {
 	@Autowired
 	DockService dockService;
 	
+	/**
+	 * Description: method show bike detail of BikeController
+	 * @param bikeId: id of the bike to show 
+	 * @return ModelAndView: Model to show to view and redirect to the view bike_detail.jsp
+	 */
 	@RequestMapping(value = "/bike-detail", method = RequestMethod.GET)
 	public ModelAndView showBikeDetail(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("bike_detail");
@@ -32,6 +41,10 @@ public class BikeController {
 		return mav;
 	}
 	
+	/**
+	 * Description: method show bike detail you are renting of BikeController
+	 * @return ModelAndView: Model to show to view and redirect to the view current_bike_status.jsp
+	 */
 	@RequestMapping(value = "/current-bike-status", method = RequestMethod.GET)
 	public ModelAndView showBikeDetail() {
 		ModelAndView mav = new ModelAndView();

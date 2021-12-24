@@ -11,11 +11,19 @@ import EcoBikeRental.Entity.DepositTransaction;
 import EcoBikeRental.Entity.MapperPaymentTransaction;
 import EcoBikeRental.Entity.PaymentTransaction;
 
+/**
+ * Description: class Dao execute the query to table payment_transaction
+ *
+ */
 @Repository
 public class PaymentTransactionDao {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
+	/**
+	 * Description: execute the query get all payment_transaction
+	 * @return List<PaymentTransaction>: list bike return received after execute query
+	 */
 	public List<PaymentTransaction> getAllPaymentTransaction() {
 		List<PaymentTransaction> listPaymentTransactions = new ArrayList<PaymentTransaction>();
 		String sql = "SELECT * FROM payment_transaction";
@@ -23,6 +31,11 @@ public class PaymentTransactionDao {
 		return listPaymentTransactions;
 	}
 	
+	/**
+	 * Description: execute the query save payment_transaction
+	 * @param paymentTransaction: info of payment transaction you want to save
+	 * @return PaymentTransaction: payment transaction after save to db
+	 */
 	public PaymentTransaction savePaymentTransaction(PaymentTransaction paymentTransaction) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO payment_transaction (rent_id, time, payment, deposit_transaction_id, returned_money, created_time) VALUES (")

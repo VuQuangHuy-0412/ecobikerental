@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import EcoBikeRental.Dao.DockDao;
 import EcoBikeRental.Entity.Dock;
 
+/**
+ * Description: Class Service execute the logic action of dock
+ *
+ */
 @Service
 public class DockService {
 	@Autowired

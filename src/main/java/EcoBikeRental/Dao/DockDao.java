@@ -10,11 +10,19 @@ import org.springframework.stereotype.Repository;
 import EcoBikeRental.Entity.MapperDock;
 import EcoBikeRental.Entity.Dock;
 
+/**
+ * Description: class Dao execute the query to table dock
+ *
+ */
 @Repository
 public class DockDao {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
+	/**
+	 * Description: execute the query get all dock
+	 * @return List<Dock>: list dock received after execute query
+	 */
 	public List<Dock> getAllDock() {
 		List<Dock> listDocks = new ArrayList<Dock>();
 		String sql = "SELECT * FROM dock";
@@ -22,6 +30,10 @@ public class DockDao {
 		return listDocks;
 	}
 	
+	/**
+	 * Description: execute the query get all dock province
+	 * @return List<Dock>: list dock province received after execute query
+	 */
 	public List<Dock> getListDockProvince() {
 		List<Dock> listProvince = new ArrayList<Dock>();
 		String sql = "Select * from dock d group by d.province;";
@@ -29,6 +41,11 @@ public class DockDao {
 		return listProvince;
 	}
 	
+	/**
+	 * Description: execute the query get all dock by keyword
+	 * @param keyword: the keyword user insert
+	 * @return List<Dock>: list dock contain keyword received after execute query
+	 */
 	public List<Dock> getListDockByKeyword(String keyword) {
 		List<Dock> listDocks = new ArrayList<Dock>();
 		StringBuilder builder = new StringBuilder();
@@ -38,6 +55,11 @@ public class DockDao {
 		return listDocks;
 	}
 	
+	/**
+	 * Description: execute the query get all dock by dockId
+	 * @param dockId: id of the dock want to get
+	 * @return Dock: dock received after execute query
+	 */
 	public Dock getDockByDockId(Integer dockId) {
 		Dock dock = new Dock();
 		StringBuilder builder = new StringBuilder();

@@ -2,6 +2,10 @@ package EcoBikeRental.Dto;
 
 import EcoBikeRental.Entity.BikeCategory;
 
+/**
+ * Description: Class Dto contain info number of category of a dock
+ *
+ */
 public class NumberOfBikeCategoryDto {
 	private BikeCategory bikeCategory;
 	private Integer numbers;

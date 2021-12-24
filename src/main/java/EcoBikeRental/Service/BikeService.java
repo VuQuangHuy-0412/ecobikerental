@@ -15,6 +15,10 @@ import EcoBikeRental.Entity.BikeCategory;
 import EcoBikeRental.Entity.BikeReturn;
 import EcoBikeRental.Entity.DockHasBike;
 
+/**
+ * Description: Class Service execute the logic action of bike 
+ *
+ */
 @Service
 public class BikeService {
 	@Autowired

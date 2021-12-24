@@ -21,6 +21,10 @@ import EcoBikeRental.Dto.RequestProcessTransactionDto;
 import EcoBikeRental.Dto.RequestResetBalanceDto;
 import EcoBikeRental.Dto.RequestTransactionDto;
 import EcoBikeRental.Dto.TransactionToConvertMD5Dto;
+/**
+ * Description: Interbank Connection class execute all action of calling API Interbank
+ *
+ */
 @Service
 public class InterbankConnection {
 	//init httpclient variable
@@ -35,8 +39,15 @@ public class InterbankConnection {
 	private final String DATE_EXPIRED = "1125";
 	private final String OWNER = "Group 12";
 	private final String APP_CODE = "Cn2iBu0JxIc=";
-	private final String SECRET_KEY = "Cn2iBu0JxIc=";
+	private final String SECRET_KEY = "BTrW4tn1vwY=";
 	
+	/**
+	 * Description: Method call API process transaction of Interbank
+	 * @param command: type of process pay or refund
+	 * @param amount: the money amount to transaction
+	 * @param transactionContent: content Transaction
+	 * @return JsonNode: the response of api process transaction
+	 */
 	public JsonNode processTransaction(String command, Long amount, String transactionContent) {
 		try {
 			HttpPatch post = new HttpPatch(URL_PROCESS_TRANSACTION);
@@ -99,6 +110,10 @@ public class InterbankConnection {
 		}
 	}
 	
+	/**
+	 * Description: method call api reset balance Interbank
+	 * @return JsonNode: the response of api reset balance
+	 */
 	public JsonNode resetBalance() {
 		try {
 			//set URL patch method

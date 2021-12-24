@@ -21,6 +21,10 @@ import EcoBikeRental.Entity.BikeRent;
 import EcoBikeRental.Entity.BikeReturn;
 import EcoBikeRental.Entity.PaymentTransaction;
 
+/**
+ * Description: Class Service to execute the action logic return bike
+ *
+ */
 @Service
 public class BikeReturnService {
 	@Autowired
@@ -41,6 +45,11 @@ public class BikeReturnService {
 	@Autowired
 	DockHasBikeDao dockHasBikeDao;
 	
+	/**
+	 * Description: method calculate the money of a rent transaction
+	 * @param bikeId: id of the bike renting
+	 * @return Long: money of the rent transaction
+	 */
 	public Long calculatePaymentAmount(Integer bikeId) {
 		try {
 			BikeRent bikeRent = bikeRentDao.getLastBikeRent().get(0);
@@ -68,6 +77,12 @@ public class BikeReturnService {
 		}
 	}
 	
+	/**
+	 * Description: method calculate the time of a rent transaction
+	 * @param rentTime: the start rent time
+	 * @return Long: the time from start to end rent bike (seconds)
+	 * @throws ParseException
+	 */
 	public Long calculateTime(String rentTime) throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		Date dateRent = formatter.parse(rentTime);
@@ -81,6 +96,14 @@ public class BikeReturnService {
 		return allRentTime;
 	}
 	
+	/**
+	 * Description: method process return a bike
+	 * @param bikeId: id of the bike returning
+	 * @param dockId: id of the dock want to renting
+	 * @param point: point want to renting
+	 * @param refundAmount: the refund money system give to user
+	 * @return String: status of process: success or fail
+	 */
 	public String processReturn(Integer bikeId, Integer dockId, Integer point, Long refundAmount) {
 		try {
 			
