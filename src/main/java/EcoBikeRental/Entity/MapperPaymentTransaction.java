@@ -15,7 +15,7 @@ public class MapperPaymentTransaction implements RowMapper<PaymentTransaction>{
 		paymentTransaction.setPaymentTransactionId(rs.getInt("payment_transaction_id"));
 		paymentTransaction.setRentId(rs.getInt("rent_id"));
 		paymentTransaction.setReturnedMoney(rs.getLong("returned_money"));
-		paymentTransaction.setTime(rs.getInt("time"));
+		paymentTransaction.setTime(rs.getLong("time"));
 		return paymentTransaction;
 	}
 

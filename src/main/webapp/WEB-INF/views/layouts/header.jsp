@@ -38,8 +38,7 @@
 					<li class="menu"><a href="/EcoBikeRental/list-dock" style="text-shadow:  0 0 white; color: black;"><b>List Dock</b></a></li>
 					<li class="menu"><a href="/EcoBikeRental/rent-bike" style="text-shadow:  0 0 white; color: black;"><b>Rent Bike</b></a></li>
 					<li class="menu"><a href="/EcoBikeRental/current-bike-status" style="text-shadow:  0 0 white; color: black;"><b>Curent Bike Status</b></a></li>
-					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>Four Column</b></a></li>
-					<li class="menu"><a href="/EcoBikeRental/#" style="text-shadow:  0 0 white; color: black;"><b>General Content</b></a></li>
+					<li class="menu"><a href="/EcoBikeRental/return-bike" style="text-shadow:  0 0 white; color: black;"><b>Return Bike</b></a></li>
 				</ul>
 				<form action="#" class="navbar-search pull-right" style="margin-right: 10px">
 					<input type="text" placeholder="Search" class="search-query span2">

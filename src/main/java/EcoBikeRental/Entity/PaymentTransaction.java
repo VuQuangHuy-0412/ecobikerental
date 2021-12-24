@@ -3,7 +3,7 @@ package EcoBikeRental.Entity;
 public class PaymentTransaction {
 	private Integer paymentTransactionId;
 	private Integer rentId;
-	private Integer time; //seconds
+	private Long time; //seconds
 	private Long payment;
 	private Integer depositTransactionId;
 	private Long returnedMoney;
@@ -30,11 +30,11 @@ public class PaymentTransaction {
 		this.rentId = rentId;
 	}
 
-	public Integer getTime() {
+	public Long getTime() {
 		return time;
 	}
 
-	public void setTime(Integer time) {
+	public void setTime(Long time) {
 		this.time = time;
 	}
 

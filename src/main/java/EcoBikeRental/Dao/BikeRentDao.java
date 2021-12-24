@@ -35,10 +35,10 @@ public class BikeRentDao {
 		return bikeRent;
 	}
 	
-	public BikeRent getLastBikeRent() {
-		BikeRent bikeRent = new BikeRent();
+	public List<BikeRent> getLastBikeRent() {
+		List<BikeRent> bikeRent = new ArrayList<BikeRent>();
 		String sql = "SELECT * FROM bike_rent br ORDER BY br.rent_id DESC LIMIT 1;";
-		bikeRent = jdbcTemplate.queryForObject(sql, new MapperBikeRent());
+		bikeRent = jdbcTemplate.query(sql, new MapperBikeRent());
 		return bikeRent;
 	}
 }

@@ -42,3 +42,11 @@ $(document).ready(function() {
 	}
 	console.log(i);
 });
+
+function validateForm() {
+  let x = document.forms["formReturn"]["point"].value;
+  if (x == "") {
+    alert("You must fill the point you return the bike!");
+    return false;
+  }
+}

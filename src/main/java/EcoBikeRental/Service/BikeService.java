@@ -96,11 +96,15 @@ public class BikeService {
 	}
 	
 	public Integer getCurrentBikeId() {
-		List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(bikeRentDao.getLastBikeRent().getRentId());
-		if (bikeReturn.isEmpty() == false) {
-			return -1;
+		if (bikeRentDao.getLastBikeRent().isEmpty() == false) {
+			List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
+			if (bikeReturn.isEmpty() == false) {
+				return -1;
+			} else {
+				return bikeRentDao.getLastBikeRent().get(0).getBikeId();
+			}
 		} else {
-			return bikeRentDao.getLastBikeRent().getBikeId();
+			return -1;
 		}
 	}
 }

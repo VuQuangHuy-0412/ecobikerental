@@ -22,6 +22,15 @@ public class DepositTransactionDao {
 		return listDepositTransactions;
 	}
 	
+	public DepositTransaction getDepositTransactionByRentId(Integer rentId) {
+		DepositTransaction depositTransaction = new DepositTransaction();
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT * FROM deposit_transaction dt where dt.rent_id = ").append(rentId);
+		String sql = builder.toString();
+		depositTransaction = jdbcTemplate.queryForObject(sql, new MapperDepositTransaction());
+		return depositTransaction;
+	}
+	
 	public DepositTransaction saveDepositTransaction(DepositTransaction depositTransaction) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO deposit_transaction (rent_id, money_amount, created_at, description, status, deposit_by) VALUES (")

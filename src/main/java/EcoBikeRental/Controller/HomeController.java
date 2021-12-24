@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import EcoBikeRental.Dao.UserDao;
 import EcoBikeRental.Service.BikeRentService;
 import EcoBikeRental.Service.BikeService;
+import EcoBikeRental.Service.DockService;
 import EcoBikeRental.Service.InterbankConnection;
 
 @Controller
@@ -17,17 +18,16 @@ public class HomeController {
 	UserDao userDao;
 	
 	@Autowired
-	BikeService bikeService;
+	DockService dockService;
 	
 	@Autowired
 	BikeRentService bikeRentService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
-		ModelAndView mav = new ModelAndView("index");
-		mav.addObject("users", userDao.getAllUser());
-		mav.addObject("listBikes", bikeService.getListBikeByDockId(1));
-		bikeRentService.processRent(1000);
+		ModelAndView mav = new ModelAndView("show_list_dock");
+		mav.addObject("provinces", dockService.getListDockProvince());
+		mav.addObject("docks", dockService.getAllDock());
 		return mav;
 	}
 }

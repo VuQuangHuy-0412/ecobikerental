@@ -4,6 +4,7 @@
     
 <title>Confirm Rent Bike</title>
 <body>
+<c:if test="${ bikeId == -1 }">
 	<div class="row">
 		<div class="span12" style="margin-left: 40px;">
 			<div class="well well-small row" style="background-color: cornflowerblue;">
@@ -27,4 +28,21 @@
 			</div>
 		</div>
 	</div>
+</c:if>
+<c:if test="${ bikeId != -1 }">
+	<div class="row">
+		<div class="span12" style="margin-left: 40px;">
+			<div class="well well-small row" style="background-color: coral;">
+				<h3>You are renting. You must return the bike if you want to rent another.</h3>
+			</div>
+			<div class="row">
+				<div class="span4">&nbsp;</div>
+				<div class="span4">
+					<button style="background-color: darkgray;" onClick="window.location.href='/EcoBikeRental/return-bike'"><b>Return Bike</b></button>
+				</div>
+				<div class="span2">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+</c:if>
 </body>

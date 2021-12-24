@@ -68,7 +68,7 @@
 			<div class="row">
 				<div class="span3">&nbsp;</div>
 				<div class="span2">
-					<button style="background-color: darkgray;" onclick="window.location.href='/EcoBikeRental/confirm-rent-bike?bikeId=<c:out value="${ bike.bikeId }" />'"><b>Return This Bike</b></button>
+					<button style="background-color: darkgray;" onclick="window.location.href='/EcoBikeRental/return-bike'"><b>Return This Bike</b></button>
 				</div>
 				<div class="span2">&nbsp;</div>
 			</div>

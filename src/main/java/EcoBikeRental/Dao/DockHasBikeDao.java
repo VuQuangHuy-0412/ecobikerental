@@ -34,7 +34,7 @@ public class DockHasBikeDao {
 	public DockHasBike getBikeByBikeId(Integer bikeId) {
 		DockHasBike bike = new DockHasBike();
 		StringBuilder builder = new StringBuilder();
-		builder.append("Select * from dock_has_bike dhb where dhb.bike_id = ").append(bikeId).append(" AND dhb.active = 1;");
+		builder.append("Select * from dock_has_bike dhb where dhb.bike_id = ").append(bikeId);
 		String sql = builder.toString();
 		bike = jdbcTemplate.queryForObject(sql, new MapperDockHasBike());
 		return bike;
@@ -47,5 +47,13 @@ public class DockHasBikeDao {
 		String sql = builder.toString();
 		bike = jdbcTemplate.queryForObject(sql, new MapperDockHasBike());
 		return bike;
+	}
+	
+	public DockHasBike updateBikeDock(Integer dockId, Integer active, Integer bikeId, Integer point) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UPDATE dock_has_bike dhb SET dhb.active = ").append(active).append(", dhb.dock_id = ").append(dockId).append(", dhb.point = ").append(point).append(" WHERE dhb.bike_id = ").append(bikeId);
+		String sql = builder.toString();
+		jdbcTemplate.update(sql);
+		return getBikeByBikeId(bikeId);
 	}
 }

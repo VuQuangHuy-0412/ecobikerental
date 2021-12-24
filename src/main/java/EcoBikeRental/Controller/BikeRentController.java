@@ -37,6 +37,8 @@ public class BikeRentController {
 	@RequestMapping(value = "/rent-bike", method = RequestMethod.GET)
 	public ModelAndView rentBike() {
 		ModelAndView mav = new ModelAndView("choose_bike_rent");
+		Integer bikeId = bikeService.getCurrentBikeId();
+		mav.addObject("bikeId", bikeId);
 		return mav;
 	}
 	
