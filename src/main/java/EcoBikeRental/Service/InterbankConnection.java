@@ -26,7 +26,7 @@ import EcoBikeRental.Dto.TransactionToConvertMD5Dto;
  *
  */
 @Service
-public class InterbankConnection {
+public class InterbankConnection implements IInterbankConnection{
 	//init httpclient variable
 	CloseableHttpClient httpclient = HttpClients.createDefault();
 	

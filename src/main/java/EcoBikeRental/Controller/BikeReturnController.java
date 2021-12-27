@@ -65,7 +65,7 @@ public class BikeReturnController {
 		mav.addObject("dock", dockService.getDockByDockId(dockId));
 		mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
 		mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
-		mav.addObject("paymentAmount", bikeReturnService.calculatePaymentAmount(bikeId));
+		mav.addObject("paymentAmount", bikeReturnService.getPaymentAmount());
 		
 		return mav;
 	}

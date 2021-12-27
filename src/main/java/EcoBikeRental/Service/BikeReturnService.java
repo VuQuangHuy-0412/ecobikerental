@@ -1,11 +1,7 @@
 package EcoBikeRental.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +30,7 @@ public class BikeReturnService {
 	BikeReturnDao bikeReturnDao;
 	
 	@Autowired
-	InterbankConnection interbankConnection;
+	IInterbankConnection interbankConnection;
 	
 	@Autowired
 	DepositTransactionDao depositTransactionDao;
@@ -45,55 +41,27 @@ public class BikeReturnService {
 	@Autowired
 	DockHasBikeDao dockHasBikeDao;
 	
+	@Autowired
+	ICalculateMoney calculateMoney;
+	
 	/**
 	 * Description: method calculate the money of a rent transaction
-	 * @param bikeId: id of the bike renting
 	 * @return Long: money of the rent transaction
 	 */
-	public Long calculatePaymentAmount(Integer bikeId) {
+	public Long getPaymentAmount() {
 		try {
 			BikeRent bikeRent = bikeRentDao.getLastBikeRent().get(0);
 			
 			// get rent time and return time
 			String rentTime = bikeRent.getRentTime();
-			long allRentTime = calculateTime(rentTime);
+			long allRentTime = calculateMoney.calculateTime(rentTime);
 			
-			// if rent time < 10 mins, fee = 0
-			// if rent time < 30 mins, fee = 10000
-			// if rent time > 30 mins, fee += 3000 each 15 mins
-			if (allRentTime <= 600) {
-				return (long) 0;
-			} else {
-				if (allRentTime <= 1800) {
-					return (long) 10000;
-				} else {
-					return (long) 10000 + ((allRentTime - 1801)/900 + 1)*3000;
-				}
-			}
+			return calculateMoney.calculatePaymentAmount(allRentTime);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
-	}
-	
-	/**
-	 * Description: method calculate the time of a rent transaction
-	 * @param rentTime: the start rent time
-	 * @return Long: the time from start to end rent bike (seconds)
-	 * @throws ParseException
-	 */
-	public Long calculateTime(String rentTime) throws ParseException {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-		Date dateRent = formatter.parse(rentTime);
-		
-		Calendar c = Calendar.getInstance();
-		c.setTime(dateRent);
-		long rentTimestamp = c.getTimeInMillis();
-		long returnTimestamp = System.currentTimeMillis();
-		
-		long allRentTime = (returnTimestamp - rentTimestamp)/1000;
-		return allRentTime;
 	}
 	
 	/**
@@ -134,10 +102,10 @@ public class BikeReturnService {
 			PaymentTransaction paymentTransaction = new PaymentTransaction();
 			paymentTransaction.setCreatedTime(dtf.format(now).toString());
 			paymentTransaction.setDepositTransactionId(depositTransactionDao.getDepositTransactionByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId()).getDepositTransactionId());
-			paymentTransaction.setPayment(calculatePaymentAmount(bikeId));
+			paymentTransaction.setPayment(getPaymentAmount());
 			paymentTransaction.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
 			paymentTransaction.setReturnedMoney(refundAmount);
-			paymentTransaction.setTime(calculateTime(bikeRentDao.getLastBikeRent().get(0).getRentTime()));
+			paymentTransaction.setTime(calculateMoney.calculateTime(bikeRentDao.getLastBikeRent().get(0).getRentTime()));
 			
 			paymentTransactionDao.savePaymentTransaction(paymentTransaction);
 			

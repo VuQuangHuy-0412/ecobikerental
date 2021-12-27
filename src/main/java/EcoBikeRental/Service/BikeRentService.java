@@ -31,7 +31,7 @@ public class BikeRentService {
 	BikeService bikeService;
 	
 	@Autowired
-	InterbankConnection interbankConnection;
+	IInterbankConnection interbankConnection;
 	
 	@Autowired
 	DepositTransactionDao depositTransactionDao;
@@ -49,11 +49,11 @@ public class BikeRentService {
 	 */
 	public String processRent(Integer bikeId) {
 		try {
-			//check if you have not rented bike yet
+			//check if you have rented bike yet
 			if (bikeRentDao.getLastBikeRent().isEmpty() == false) {
 				List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
 				
-				// check if you are renting bike
+				// check if you have returned bike
 				if (bikeReturn.isEmpty() == false) {
 					// save bike rent
 					BikeRent bikeRent = new BikeRent();
