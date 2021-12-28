@@ -87,8 +87,7 @@ public class BikeReturnService {
 			}
 			
 			if (result.get("errorCode").asText() != "00") {
-				return "Card Information Invalid";
-			} else {
+				
 				//save bike return
 				BikeReturn bikeReturn = new BikeReturn();
 				bikeReturn.setDockId(dockId);
@@ -116,6 +115,8 @@ public class BikeReturnService {
 				dockHasBikeDao.updateBikeDock(dockId, 1, bikeId, point);
 				
 				return "Pay and return bike success!";
+			} else {
+				return "Card Information Invalid";
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

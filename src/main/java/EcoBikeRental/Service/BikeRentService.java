@@ -61,9 +61,7 @@ public class BikeRentService {
 						interbankConnection.resetBalance(cardCode, owner);
 						result = interbankConnection.processTransaction("pay", (long) bikeService.getCategoryByBikeId(bikeId).getPrice(), "Dat coc thue xe", cardCode, owner);
 					}
-					if (result.get("errorCode").asText() != "00") {
-						return "Card Information Invalid";
-					} else {
+					if (result.get("errorCode").asText().equals("00")) {
 						// save bike rent
 						BikeRent bikeRent = new BikeRent();
 						bikeRent.setUserId(1);
@@ -94,6 +92,8 @@ public class BikeRentService {
 						dockHasBikeDao.updateBikeDock(bike.getDockId(), 0, bikeId, bike.getPoint());
 						
 						return "Deposit success! You can take the bike and use.";
+					} else {
+						return "Card Information Invalid";
 					}
 				} else {
 					return "You are renting. You must return the bike if you want to rent another.";
@@ -106,8 +106,7 @@ public class BikeRentService {
 					result = interbankConnection.processTransaction("pay", (long) bikeService.getCategoryByBikeId(bikeId).getPrice(), "Dat coc thue xe", cardCode, owner);
 				}
 				if (result.get("errorCode").asText() != "00") {
-					return "Card Information Invalid";
-				} else {
+
 					// save bike rent
 					BikeRent bikeRent = new BikeRent();
 					bikeRent.setUserId(1);
@@ -138,6 +137,8 @@ public class BikeRentService {
 					dockHasBikeDao.updateBikeDock(bike.getDockId(), 0, bikeId, bike.getPoint());
 					
 					return "Deposit success! You can take the bike and use.";
+				} else {
+					return "Card Information Invalid";
 				}
 			}
 		} catch(Exception e) {
