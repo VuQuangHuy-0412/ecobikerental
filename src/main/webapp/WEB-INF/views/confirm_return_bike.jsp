@@ -19,7 +19,7 @@
 			<div class="well well-small row" style="background-color: cornflowerblue;">
 				<h3>Return Bike Information</h3>
 			</div>
-			<form id="formReturn" method="GET" action="/EcoBikeRental/process-return" onsubmit="return validateForm()">
+			<form id="formReturn" method="GET" action="/EcoBikeRental/add-card-payment" onsubmit="return validateForm()">
 				<div class="container-fluid">
 	                <div class="">
 	                    <div class="ibox-content">
@@ -96,7 +96,7 @@
 			<div class="row">
 				<div class="span3">&nbsp;</div>
 				<div class="span2">
-					<button style="background-color: darkgray;" type="submit" form="formReturn"><b>Confirm Return Bike</b></button>
+					<button style="background-color: darkgray;" type="submit" form="formReturn"><b>Insert Your Card Information</b></button>
 				</div>
 				<div class="span2">&nbsp;</div>
 			</div>

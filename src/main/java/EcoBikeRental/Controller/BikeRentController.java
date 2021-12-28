@@ -88,10 +88,10 @@ public class BikeRentController {
 	 * @return ModelAndView: Model to show to view and redirect to the view process-rent.jsp
 	 */
 	@RequestMapping(value = "/process-rent", method = RequestMethod.GET)
-	public ModelAndView processRent(@RequestParam("bikeId") Integer bikeId) {
+	public ModelAndView processRent(@RequestParam("bikeId") Integer bikeId, @RequestParam("cardCode") String cardCode, @RequestParam("owner") String owner) {
 		ModelAndView mav = new ModelAndView("process-rent");
 		
-		mav.addObject("status", bikeRentService.processRent(bikeId));
+		mav.addObject("status", bikeRentService.processRent(bikeId, cardCode, owner));
 		
 		return mav;
 	}

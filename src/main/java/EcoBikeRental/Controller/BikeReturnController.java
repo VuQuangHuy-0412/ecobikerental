@@ -78,10 +78,10 @@ public class BikeReturnController {
 	 * @return ModelAndView: Model to show to view and redirect to the view return_bike.jsp
 	 */
 	@RequestMapping(value = "/process-return", method = RequestMethod.GET) 
-	public ModelAndView processReturn(@RequestParam("bikeId") Integer bikeId, @RequestParam("dockId") Integer dockId, @RequestParam("point") Integer point, @RequestParam("refundAmount") Long refundAmount) {
+	public ModelAndView processReturn(@RequestParam("bikeId") Integer bikeId, @RequestParam("dockId") Integer dockId, @RequestParam("point") Integer point, @RequestParam("refundAmount") Long refundAmount, @RequestParam("cardCode") String cardCode, @RequestParam("owner") String owner) {
 		ModelAndView mav = new ModelAndView("process_return");
 		
-		mav.addObject("status", bikeReturnService.processReturn(bikeId, dockId, point, refundAmount));
+		mav.addObject("status", bikeReturnService.processReturn(bikeId, dockId, point, refundAmount, cardCode, owner));
 		
 		return mav;
 	}

@@ -34,10 +34,10 @@ public class InterbankConnection implements IInterbankConnection{
 	private final String URL_PROCESS_TRANSACTION = "https://ecopark-system-api.herokuapp.com/api/card/processTransaction";
 	private final String URL_RESET_BALANCE = "https://ecopark-system-api.herokuapp.com/api/card/reset-balance";
 	private final String VERSION = "1.0.1";
-	private final String CARD_CODE = "kstn_group12_2021";
+	//private final String CARD_CODE = "kstn_group12_2021";
 	private final String CVV_CODE = "936";
 	private final String DATE_EXPIRED = "1125";
-	private final String OWNER = "Group 12";
+	//private final String OWNER = "Group 12";
 	private final String APP_CODE = "Cn2iBu0JxIc=";
 	private final String SECRET_KEY = "BTrW4tn1vwY=";
 	
@@ -48,7 +48,7 @@ public class InterbankConnection implements IInterbankConnection{
 	 * @param transactionContent: content Transaction
 	 * @return JsonNode: the response of api process transaction
 	 */
-	public JsonNode processTransaction(String command, Long amount, String transactionContent) {
+	public JsonNode processTransaction(String command, Long amount, String transactionContent, String cardCode, String owner) {
 		try {
 			HttpPatch post = new HttpPatch(URL_PROCESS_TRANSACTION);
 			
@@ -58,14 +58,14 @@ public class InterbankConnection implements IInterbankConnection{
 			RequestTransactionDto transaction = new RequestTransactionDto();
 			transaction.setCommand(command);
 			transaction.setAmount(amount);
-			transaction.setCardCode(CARD_CODE);
+			transaction.setCardCode(cardCode);
 			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
 			LocalDateTime now = LocalDateTime.now();  
 			transaction.setCreatedAt(dtf.format(now).toString());
 			transaction.setCvvCode(CVV_CODE);
 			transaction.setDateExpired(DATE_EXPIRED);
-			transaction.setOwner(OWNER);
+			transaction.setOwner(owner);
 			transaction.setTransactionContent(transactionContent);
 			body.setTransaction(transaction);
 			body.setAppCode(APP_CODE);
@@ -77,10 +77,10 @@ public class InterbankConnection implements IInterbankConnection{
 			TransactionToConvertMD5Dto bodyTransaction = new TransactionToConvertMD5Dto();
 			bodyTransaction.setCommand(command);
 			bodyTransaction.setAmount(amount);
-			bodyTransaction.setCardCode(CARD_CODE);
+			bodyTransaction.setCardCode(cardCode);
 			bodyTransaction.setCvvCode(CVV_CODE);
 			bodyTransaction.setDateExpired(DATE_EXPIRED);
-			bodyTransaction.setOwner(OWNER);
+			bodyTransaction.setOwner(owner);
 			bodyTransaction.setTransactionContent(transactionContent);
 			bodyHashCode.setTransaction(bodyTransaction);
 			
@@ -114,17 +114,17 @@ public class InterbankConnection implements IInterbankConnection{
 	 * Description: method call api reset balance Interbank
 	 * @return JsonNode: the response of api reset balance
 	 */
-	public JsonNode resetBalance() {
+	public JsonNode resetBalance(String cardCode, String owner) {
 		try {
 			//set URL patch method
 			HttpPatch post = new HttpPatch(URL_RESET_BALANCE);
 			
 			//set body
 			RequestResetBalanceDto body = new RequestResetBalanceDto();
-			body.setCardCode(CARD_CODE);
+			body.setCardCode(cardCode);
 			body.setCvvCode(CVV_CODE);
 			body.setDateExpired(DATE_EXPIRED);
-			body.setOwner(OWNER);
+			body.setOwner(owner);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			

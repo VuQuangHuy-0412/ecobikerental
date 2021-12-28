@@ -78,7 +78,7 @@
 			<div class="row">
 				<div class="span3">&nbsp;</div>
 				<div class="span4">
-					<button style="background-color: darkgray;" onclick="window.location.href='/EcoBikeRental/process-rent?bikeId=<c:out value="${ bike.bikeId }" />'"><b>Confirm To Rent This Bike</b></button>
+					<button style="background-color: darkgray;" onclick="window.location.href='/EcoBikeRental/add-card-deposit?bikeId=<c:out value="${ bike.bikeId }" />'"><b>Insert Your Card Information</b></button>
 				</div>
 				<div class="span2">&nbsp;</div>
 			</div>

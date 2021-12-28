@@ -72,48 +72,51 @@ public class BikeReturnService {
 	 * @param refundAmount: the refund money system give to user
 	 * @return String: status of process: success or fail
 	 */
-	public String processReturn(Integer bikeId, Integer dockId, Integer point, Long refundAmount) {
+	public String processReturn(Integer bikeId, Integer dockId, Integer point, Long refundAmount, String cardCode, String owner) {
 		try {
-			
-			//save bike return
-			BikeReturn bikeReturn = new BikeReturn();
-			bikeReturn.setDockId(dockId);
-			bikeReturn.setIsPaid(1);
-			bikeReturn.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
-			
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-			LocalDateTime now = LocalDateTime.now(); 
-			bikeReturn.setReturnTime(dtf.format(now).toString());
-			
-			bikeReturnDao.saveBikeReturn(bikeReturn);
-			
+			JsonNode result;
 			//refund or pay more 
 			if (refundAmount > 0) {
-				JsonNode result = interbankConnection.processTransaction("refund", refundAmount, "Hoan tien thue xe");
+				result = interbankConnection.processTransaction("refund", refundAmount, "Hoan tien thue xe", cardCode, owner);
 			} else {
-				JsonNode result = interbankConnection.processTransaction("pay", -refundAmount, "Tra tien thue xe");
+				result = interbankConnection.processTransaction("pay", -refundAmount, "Tra tien thue xe", cardCode, owner);
 				if (result.get("errorCode").asText().equals("02")) {
-					interbankConnection.resetBalance();
-					result = interbankConnection.processTransaction("pay", -refundAmount, "Tra tien thue xe");
+					interbankConnection.resetBalance(cardCode, owner);
+					result = interbankConnection.processTransaction("pay", -refundAmount, "Tra tien thue xe", cardCode, owner);
 				}
 			}
 			
-			//save payment transaction
-			PaymentTransaction paymentTransaction = new PaymentTransaction();
-			paymentTransaction.setCreatedTime(dtf.format(now).toString());
-			paymentTransaction.setDepositTransactionId(depositTransactionDao.getDepositTransactionByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId()).getDepositTransactionId());
-			paymentTransaction.setPayment(getPaymentAmount());
-			paymentTransaction.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
-			paymentTransaction.setReturnedMoney(refundAmount);
-			paymentTransaction.setTime(calculateMoney.calculateTime(bikeRentDao.getLastBikeRent().get(0).getRentTime()));
-			
-			paymentTransactionDao.savePaymentTransaction(paymentTransaction);
-			
-			//update dock_has_bike
-			dockHasBikeDao.updateBikeDock(dockId, 1, bikeId, point);
-			
-			return "Pay and return bike success!";
-			
+			if (result.get("errorCode").asText() != "00") {
+				return "Card Information Invalid";
+			} else {
+				//save bike return
+				BikeReturn bikeReturn = new BikeReturn();
+				bikeReturn.setDockId(dockId);
+				bikeReturn.setIsPaid(1);
+				bikeReturn.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
+				
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+				LocalDateTime now = LocalDateTime.now(); 
+				bikeReturn.setReturnTime(dtf.format(now).toString());
+				
+				bikeReturnDao.saveBikeReturn(bikeReturn);
+				
+				//save payment transaction
+				PaymentTransaction paymentTransaction = new PaymentTransaction();
+				paymentTransaction.setCreatedTime(dtf.format(now).toString());
+				paymentTransaction.setDepositTransactionId(depositTransactionDao.getDepositTransactionByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId()).getDepositTransactionId());
+				paymentTransaction.setPayment(getPaymentAmount());
+				paymentTransaction.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
+				paymentTransaction.setReturnedMoney(refundAmount);
+				paymentTransaction.setTime(calculateMoney.calculateTime(bikeRentDao.getLastBikeRent().get(0).getRentTime()));
+				
+				paymentTransactionDao.savePaymentTransaction(paymentTransaction);
+				
+				//update dock_has_bike
+				dockHasBikeDao.updateBikeDock(dockId, 1, bikeId, point);
+				
+				return "Pay and return bike success!";
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
