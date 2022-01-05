@@ -7,6 +7,10 @@ import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Calculate money varsion 1
+ *
+ */
 @Service
 public class CalculateMoney implements ICalculateMoney{
 	
