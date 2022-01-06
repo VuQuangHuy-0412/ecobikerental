@@ -1,16 +1,13 @@
-package EcoBikeRental.Service;
+package EcoBikeRental.Subsystem;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,7 +23,7 @@ import EcoBikeRental.Dto.TransactionToConvertMD5Dto;
  *
  */
 @Service
-public class InterbankConnection implements IInterbankConnection{
+public class InterbankController implements InterbankInterface{
 	//init httpclient variable
 	CloseableHttpClient httpclient = HttpClients.createDefault();
 	
@@ -41,6 +38,9 @@ public class InterbankConnection implements IInterbankConnection{
 	private final String APP_CODE = "Cn2iBu0JxIc=";
 	private final String SECRET_KEY = "BTrW4tn1vwY=";
 	
+	@Autowired
+	InterbankBoundary boundary;
+	
 	/**
 	 * Description: Method call API process transaction of Interbank
 	 * @param command: type of process pay or refund
@@ -50,8 +50,6 @@ public class InterbankConnection implements IInterbankConnection{
 	 */
 	public JsonNode processTransaction(String command, Long amount, String transactionContent, String cardCode, String owner) {
 		try {
-			HttpPatch post = new HttpPatch(URL_PROCESS_TRANSACTION);
-			
 			// build the body url
 			RequestProcessTransactionDto body = new RequestProcessTransactionDto();
 			body.setVersion(VERSION);
@@ -90,19 +88,7 @@ public class InterbankConnection implements IInterbankConnection{
 			
 			body.setHashCode(hashCode);
 			
-			//set header patch method
-			post.setHeader("Content-Type", "application/json");
-			
-			//set body
-			post.setEntity(new StringEntity(mapper.writeValueAsString(body)));
-			
-			//get the response
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			CloseableHttpResponse response = httpClient.execute(post);
-			String result = EntityUtils.toString(response.getEntity());
-			
-			//convert respronse to json
-			JsonNode resultJson = mapper.readTree(result);
+			JsonNode resultJson = boundary.post(URL_PROCESS_TRANSACTION, mapper.writeValueAsString(body));
 			return resultJson;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -115,10 +101,7 @@ public class InterbankConnection implements IInterbankConnection{
 	 * @return JsonNode: the response of api reset balance
 	 */
 	public JsonNode resetBalance(String cardCode, String owner) {
-		try {
-			//set URL patch method
-			HttpPatch post = new HttpPatch(URL_RESET_BALANCE);
-			
+		try {			
 			//set body
 			RequestResetBalanceDto body = new RequestResetBalanceDto();
 			body.setCardCode(cardCode);
@@ -128,17 +111,8 @@ public class InterbankConnection implements IInterbankConnection{
 			
 			ObjectMapper mapper = new ObjectMapper();
 			
-			//set header patch method
-			post.setHeader("Content-Type", "application/json");
-			post.setEntity(new StringEntity(mapper.writeValueAsString(body)));
-			
-			// get response of url
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			CloseableHttpResponse response = httpClient.execute(post);
-			String result = EntityUtils.toString(response.getEntity());
-			
 			// convert response to json
-			JsonNode resultJson = mapper.readTree(result);
+			JsonNode resultJson = boundary.post(URL_RESET_BALANCE, mapper.writeValueAsString(body));
 			return resultJson;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

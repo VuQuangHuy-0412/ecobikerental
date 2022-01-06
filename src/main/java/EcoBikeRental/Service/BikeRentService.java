@@ -17,6 +17,7 @@ import EcoBikeRental.Entity.BikeRent;
 import EcoBikeRental.Entity.BikeReturn;
 import EcoBikeRental.Entity.DepositTransaction;
 import EcoBikeRental.Entity.DockHasBike;
+import EcoBikeRental.Subsystem.InterbankInterface;
 
 /**
  * Description: Class Service to execute the action logic rent bike
@@ -31,7 +32,7 @@ public class BikeRentService {
 	BikeService bikeService;
 	
 	@Autowired
-	IInterbankConnection interbankConnection;
+	InterbankInterface interbankConnection;
 	
 	@Autowired
 	DepositTransactionDao depositTransactionDao;

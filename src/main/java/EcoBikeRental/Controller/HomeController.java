@@ -6,11 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import EcoBikeRental.Dao.UserDao;
 import EcoBikeRental.Service.BikeRentService;
-import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
-import EcoBikeRental.Service.InterbankConnection;
 
 /**
  * Description: Controller manage the action of home
@@ -18,8 +15,6 @@ import EcoBikeRental.Service.InterbankConnection;
  */
 @Controller
 public class HomeController {
-	@Autowired
-	UserDao userDao;
 	
 	@Autowired
 	DockService dockService;

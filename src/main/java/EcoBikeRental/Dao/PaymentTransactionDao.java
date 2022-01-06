@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import EcoBikeRental.Entity.DepositTransaction;
 import EcoBikeRental.Entity.MapperPaymentTransaction;
 import EcoBikeRental.Entity.PaymentTransaction;
 

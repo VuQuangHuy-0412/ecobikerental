@@ -1,7 +1,11 @@
 package EcoBikeRental.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,7 @@ import EcoBikeRental.Dao.PaymentTransactionDao;
 import EcoBikeRental.Entity.BikeRent;
 import EcoBikeRental.Entity.BikeReturn;
 import EcoBikeRental.Entity.PaymentTransaction;
+import EcoBikeRental.Subsystem.InterbankInterface;
 
 /**
  * Description: Class Service to execute the action logic return bike
@@ -30,7 +35,7 @@ public class BikeReturnService {
 	BikeReturnDao bikeReturnDao;
 	
 	@Autowired
-	IInterbankConnection interbankConnection;
+	InterbankInterface interbankConnection;
 	
 	@Autowired
 	DepositTransactionDao depositTransactionDao;
@@ -42,7 +47,7 @@ public class BikeReturnService {
 	DockHasBikeDao dockHasBikeDao;
 	
 	@Autowired
-	ICalculateMoney calculateMoney;
+	RentalFeeCalculatorInterface calculateMoney;
 	
 	/**
 	 * Description: method calculate the money of a rent transaction
@@ -54,7 +59,7 @@ public class BikeReturnService {
 			
 			// get rent time and return time
 			String rentTime = bikeRent.getRentTime();
-			long allRentTime = calculateMoney.calculateTime(rentTime);
+			long allRentTime = calculateTime(rentTime);
 			
 			return calculateMoney.calculatePaymentAmount(allRentTime);
 			
@@ -107,7 +112,7 @@ public class BikeReturnService {
 				paymentTransaction.setPayment(getPaymentAmount());
 				paymentTransaction.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
 				paymentTransaction.setReturnedMoney(refundAmount);
-				paymentTransaction.setTime(calculateMoney.calculateTime(bikeRentDao.getLastBikeRent().get(0).getRentTime()));
+				paymentTransaction.setTime(calculateTime(bikeRentDao.getLastBikeRent().get(0).getRentTime()));
 				
 				paymentTransactionDao.savePaymentTransaction(paymentTransaction);
 				
@@ -122,5 +127,24 @@ public class BikeReturnService {
 			System.out.println(e.getMessage());
 			return null;
 		}
+	}
+	
+	/**
+	 * Description: method calculate the time of a rent transaction
+	 * @param rentTime: the start rent time "2021-12-25 21:38:00"
+	 * @return Long: the time from start to end rent bike (seconds)
+	 * @throws ParseException
+	 */
+	public Long calculateTime(String rentTime) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		Date dateRent = formatter.parse(rentTime);
+		
+		Calendar c = Calendar.getInstance();
+		c.setTime(dateRent);
+		long rentTimestamp = c.getTimeInMillis();
+		long returnTimestamp = System.currentTimeMillis();
+		
+		long allRentTime = (returnTimestamp - rentTimestamp)/1000;
+		return allRentTime;
 	}
 }
