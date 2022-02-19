@@ -3,10 +3,10 @@ package EcoBikeRental.Entity;
 public class BikeRent {
 	private Integer rentId;
 	private Integer userId;
-	private Integer bikeId;
+	private Bike bike;
 	private String rentTime;
 	private Integer isDeposited;
-	private Integer dockId;
+	private Dock dock;
 
 	public BikeRent() {
 		super();
@@ -29,14 +29,6 @@ public class BikeRent {
 		this.userId = userId;
 	}
 
-	public Integer getBikeId() {
-		return bikeId;
-	}
-
-	public void setBikeId(Integer bikeId) {
-		this.bikeId = bikeId;
-	}
-
 	public String getRentTime() {
 		return rentTime;
 	}
@@ -53,11 +45,19 @@ public class BikeRent {
 		this.isDeposited = isDeposited;
 	}
 
-	public Integer getDockId() {
-		return dockId;
+	public Bike getBike() {
+		return bike;
 	}
 
-	public void setDockId(Integer dockId) {
-		this.dockId = dockId;
+	public void setBike(Bike bike) {
+		this.bike = bike;
+	}
+
+	public Dock getDock() {
+		return dock;
+	}
+
+	public void setDock(Dock dock) {
+		this.dock = dock;
 	}
 }

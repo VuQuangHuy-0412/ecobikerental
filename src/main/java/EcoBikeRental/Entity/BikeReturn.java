@@ -2,9 +2,9 @@ package EcoBikeRental.Entity;
 
 public class BikeReturn {
 	private Integer returnId;
-	private Integer rentId;
+	private BikeRent rent;
 	private String returnTime;
-	private Integer dockId;
+	private Dock dock;
 	private Integer isPaid;
 
 	public BikeReturn() {
@@ -20,14 +20,6 @@ public class BikeReturn {
 		this.returnId = returnId;
 	}
 
-	public Integer getRentId() {
-		return rentId;
-	}
-
-	public void setRentId(Integer rentId) {
-		this.rentId = rentId;
-	}
-
 	public String getReturnTime() {
 		return returnTime;
 	}
@@ -36,20 +28,28 @@ public class BikeReturn {
 		this.returnTime = returnTime;
 	}
 
-	public Integer getDockId() {
-		return dockId;
-	}
-
-	public void setDockId(Integer dockId) {
-		this.dockId = dockId;
-	}
-
 	public Integer getIsPaid() {
 		return isPaid;
 	}
 
 	public void setIsPaid(Integer isPaid) {
 		this.isPaid = isPaid;
+	}
+
+	public BikeRent getRent() {
+		return rent;
+	}
+
+	public void setRent(BikeRent rent) {
+		this.rent = rent;
+	}
+
+	public Dock getDock() {
+		return dock;
+	}
+
+	public void setDock(Dock dock) {
+		this.dock = dock;
 	}
 
 }

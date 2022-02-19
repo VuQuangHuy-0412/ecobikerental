@@ -109,11 +109,7 @@
 										<tr>
 										  	<td style="text-align: center;"><c:out value="${ bike.bikeId }"></c:out></td>
 										  	<td style="text-align: left;">
-										  		<c:forEach var="category" items="${ numberOfBikeCategory }">
-										  			<c:if test="${ category.bikeCategory.categoryId == bike.categoryId }">
-										  				<c:out value="${ category.bikeCategory.name }"></c:out>
-										  			</c:if>
-										  		</c:forEach>
+										  		<c:out value="${ bike.category.name }"></c:out>
 									  		</td>
 										  	<td style="text-align: center;"><c:out value="${ bike.point }"></c:out></td>
 										  	<td style="text-align: right;"><c:out value="${ bike.status } %"></c:out></td>

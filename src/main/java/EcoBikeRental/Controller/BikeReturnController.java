@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import EcoBikeRental.Dao.BikeCategoryDao;
+import EcoBikeRental.Dao.BikeDao;
+import EcoBikeRental.Entity.Bike;
+import EcoBikeRental.Entity.Dock;
 import EcoBikeRental.Service.BikeRentService;
 import EcoBikeRental.Service.BikeReturnService;
 import EcoBikeRental.Service.BikeService;
@@ -21,6 +25,12 @@ public class BikeReturnController {
 	
 	@Autowired
 	BikeService bikeService;
+	
+	@Autowired 
+	BikeCategoryDao bikeCategoryDao;
+	
+	@Autowired
+	BikeDao dockHasBikeDao;
 	
 	@Autowired
 	DockService dockService;
@@ -42,10 +52,11 @@ public class BikeReturnController {
 		Integer bikeId = bikeService.getCurrentBikeId();
 		mav.addObject("bikeId", bikeId);
 		
+		Bike bike = bikeService.getBikeByBikeId(bikeId);
+		
 		//check that if you are renting a bike or not
 		if (bikeId != -1) {
-			mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
-			mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
+			mav.addObject("bike", bike);
 			mav.addObject("listDocks", dockService.getAllDock());
 		}
 		
@@ -62,10 +73,12 @@ public class BikeReturnController {
 	public ModelAndView confirmReturnBike(@RequestParam("bikeId") Integer bikeId, @RequestParam("dockId") Integer dockId) { 
 		ModelAndView mav = new ModelAndView("confirm_return_bike");
 		
-		mav.addObject("dock", dockService.getDockByDockId(dockId));
-		mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
-		mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
-		mav.addObject("paymentAmount", bikeReturnService.getPaymentAmount());
+		Dock dock = dockService.getDockByDockId(dockId);
+		Bike bike = bikeService.getBikeByBikeId(bikeId);
+		
+		mav.addObject("dock", dock);
+		mav.addObject("bike", bike);
+		mav.addObject("paymentAmount", bikeReturnService.getPaymentAmount(bike.getBikeCategory()));
 		
 		return mav;
 	}
@@ -80,8 +93,10 @@ public class BikeReturnController {
 	@RequestMapping(value = "/process-return", method = RequestMethod.GET) 
 	public ModelAndView processReturn(@RequestParam("bikeId") Integer bikeId, @RequestParam("dockId") Integer dockId, @RequestParam("point") Integer point, @RequestParam("refundAmount") Long refundAmount, @RequestParam("cardCode") String cardCode, @RequestParam("owner") String owner) {
 		ModelAndView mav = new ModelAndView("process_return");
+		Bike bike = bikeService.getBikeByBikeId(bikeId);
+		Dock dock = dockService.getDockByDockId(dockId);
 		
-		mav.addObject("status", bikeReturnService.processReturn(bikeId, dockId, point, refundAmount, cardCode, owner));
+		mav.addObject("status", bikeReturnService.processReturn(bike, dock, point, refundAmount, cardCode, owner));
 		
 		return mav;
 	}

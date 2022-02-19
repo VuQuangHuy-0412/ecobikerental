@@ -52,9 +52,9 @@ public class BikeReturnDao {
 	public BikeReturn saveBikeReturn(BikeReturn bikeReturn) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO bike_return (rent_id, return_time, dock_id, is_paid) VALUES (")
-			.append(bikeReturn.getRentId()).append(",'")
+			.append(bikeReturn.getRent().getRentId()).append(",'")
 			.append(bikeReturn.getReturnTime()).append("',")
-			.append(bikeReturn.getDockId()).append(",")
+			.append(bikeReturn.getDock().getDockId()).append(",")
 			.append(bikeReturn.getIsPaid()).append(")");
 		String sql = builder.toString();
 		jdbcTemplate.update(sql);

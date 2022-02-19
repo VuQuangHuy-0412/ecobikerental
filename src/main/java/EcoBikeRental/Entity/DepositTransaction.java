@@ -2,7 +2,7 @@ package EcoBikeRental.Entity;
 
 public class DepositTransaction {
 	private Integer depositTransactionId;
-	private Integer rentId;
+	private BikeRent rent;
 	private Long moneyAmount;
 	private String createdAt;
 	private String description;
@@ -22,12 +22,12 @@ public class DepositTransaction {
 		this.depositTransactionId = depositTransactionId;
 	}
 
-	public Integer getRentId() {
-		return rentId;
+	public BikeRent getRent() {
+		return rent;
 	}
 
-	public void setRentId(Integer rentId) {
-		this.rentId = rentId;
+	public void setRent(BikeRent rent) {
+		this.rent = rent;
 	}
 
 	public Long getMoneyAmount() {

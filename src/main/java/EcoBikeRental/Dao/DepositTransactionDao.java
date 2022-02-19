@@ -52,7 +52,7 @@ public class DepositTransactionDao {
 	public DepositTransaction saveDepositTransaction(DepositTransaction depositTransaction) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO deposit_transaction (rent_id, money_amount, created_at, description, status, deposit_by) VALUES (")
-			.append(depositTransaction.getRentId()).append(",")
+			.append(depositTransaction.getRent().getRentId()).append(",")
 			.append(depositTransaction.getMoneyAmount()).append(",'")
 			.append(depositTransaction.getCreatedAt()).append("','")
 			.append(depositTransaction.getDescription()).append("','")
@@ -60,6 +60,15 @@ public class DepositTransactionDao {
 			.append(depositTransaction.getDepositBy()).append("')");
 		String sql = builder.toString();
 		jdbcTemplate.update(sql);
+		return depositTransaction;
+	}
+	
+	public DepositTransaction getDepositTransactionById(Integer id) {
+		DepositTransaction depositTransaction = new DepositTransaction();
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT * FROM deposit_transaction dt where dt.deposit_transaction_id = ").append(id);
+		String sql = builder.toString();
+		depositTransaction = jdbcTemplate.queryForObject(sql, new MapperDepositTransaction());
 		return depositTransaction;
 	}
 }

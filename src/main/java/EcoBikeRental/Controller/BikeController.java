@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import EcoBikeRental.Entity.Bike;
 import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
 
@@ -31,12 +32,10 @@ public class BikeController {
 	public ModelAndView showBikeDetail(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("bike_detail");
 		
+		Bike bike = bikeService.getBikeByBikeId(bikeId);
+		
 		//add data bike, category, dock and barcode to show view
-		mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
-		mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
-		mav.addObject("dock", dockService.getDockByDockId(bikeService.getBikeByBikeId(bikeId).getDockId()));
-		mav.addObject("barcode", Integer.toBinaryString(bikeId));
-//		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
+		mav.addObject("bike", bike);
 		
 		return mav;
 	}
@@ -51,13 +50,10 @@ public class BikeController {
 		Integer bikeId = bikeService.getCurrentBikeId();
 		mav.addObject("bikeId", bikeId);
 		
+		Bike bike = bikeService.getBikeByBikeId(bikeId);
 		//check that you are renting bike or not
 		if (bikeId != -1) {
-			mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
-			mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
-			mav.addObject("dock", dockService.getDockByDockId(bikeService.getBikeByBikeId(bikeId).getDockId()));
-			mav.addObject("barcode", Integer.toBinaryString(bikeId));
-	//		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
+			mav.addObject("bike", bike);
 		} 
 		
 		mav.setViewName("current_bike_status");

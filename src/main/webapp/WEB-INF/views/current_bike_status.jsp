@@ -9,9 +9,9 @@
 		<div class="span5">
 			<div class="well well-small">
 				<figure>
-					<img src="${ category.image }" style="height: 270px; width: 300px;" alt="${ category.name }">
+					<img src="${ bike.category.image }" style="height: 270px; width: 300px;" alt="${ bike.category.name }">
 					<figcaption style="margin-top: 5px; text-align: center;">
-						<c:out value="${ category.name }" /> - <c:out value="${ bike.bikeId }" />
+						<c:out value="${ bike.category.name }" /> - <c:out value="${ bike.bikeId }" />
 					</figcaption>
 				</figure>
 			</div>
@@ -44,14 +44,14 @@
                             <td class="span3">
                                 <label><b>Type</b></label>
                             </td>
-                            <td><c:out value="${ category.name }"></c:out></td>
+                            <td><c:out value="${ bike.category.name }"></c:out></td>
                         </tr>
                         
                         <tr>
                             <td class="span3">
                                 <label><b>Description</b></label>
                             </td>
-                            <td><c:out value="${ category.description }"></c:out></td>
+                            <td><c:out value="${ bike.category.description }"></c:out></td>
                         </tr>
                         
                         <tr>

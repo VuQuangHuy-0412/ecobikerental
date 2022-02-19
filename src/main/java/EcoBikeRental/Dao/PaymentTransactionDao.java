@@ -38,10 +38,10 @@ public class PaymentTransactionDao {
 	public PaymentTransaction savePaymentTransaction(PaymentTransaction paymentTransaction) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO payment_transaction (rent_id, time, payment, deposit_transaction_id, returned_money, created_time) VALUES (")
-			.append(paymentTransaction.getRentId()).append(",")
+			.append(paymentTransaction.getRent().getRentId()).append(",")
 			.append(paymentTransaction.getTime()).append(",")
 			.append(paymentTransaction.getPayment()).append(",")
-			.append(paymentTransaction.getDepositTransactionId()).append(",")
+			.append(paymentTransaction.getDepositTransaction().getDepositTransactionId()).append(",")
 			.append(paymentTransaction.getReturnedMoney()).append(",'")
 			.append(paymentTransaction.getCreatedTime()).append("')");
 		String sql = builder.toString();

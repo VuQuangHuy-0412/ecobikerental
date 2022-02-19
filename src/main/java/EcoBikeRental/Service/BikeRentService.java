@@ -2,7 +2,6 @@ package EcoBikeRental.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +11,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import EcoBikeRental.Dao.BikeRentDao;
 import EcoBikeRental.Dao.BikeReturnDao;
 import EcoBikeRental.Dao.DepositTransactionDao;
-import EcoBikeRental.Dao.DockHasBikeDao;
+import EcoBikeRental.Dao.BikeDao;
 import EcoBikeRental.Entity.BikeRent;
-import EcoBikeRental.Entity.BikeReturn;
 import EcoBikeRental.Entity.DepositTransaction;
-import EcoBikeRental.Entity.DockHasBike;
+import EcoBikeRental.Entity.Bike;
+import EcoBikeRental.Entity.BikeCategory;
 import EcoBikeRental.Subsystem.InterbankInterface;
 
 /**
@@ -27,122 +26,79 @@ import EcoBikeRental.Subsystem.InterbankInterface;
 public class BikeRentService {
 	@Autowired
 	BikeRentDao bikeRentDao;
-	
+
 	@Autowired
 	BikeService bikeService;
-	
+
 	@Autowired
 	InterbankInterface interbankConnection;
-	
+
 	@Autowired
 	DepositTransactionDao depositTransactionDao;
-	
+
 	@Autowired
 	BikeReturnDao bikeReturnDao;
-	
+
 	@Autowired
-	DockHasBikeDao dockHasBikeDao;
-	
+	BikeDao dockHasBikeDao;
+
 	/**
 	 * Description: process the request rent bike
+	 * 
 	 * @param bikeId: id of the bike want to rent
 	 * @return String: status success or fail
 	 */
-	public String processRent(Integer bikeId, String cardCode, String owner) {
+	public String processRent(Bike bike, String cardCode, String owner) {
 		try {
-			//check if you have rented bike yet
-			if (bikeRentDao.getLastBikeRent().isEmpty() == false) {
-				List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
-				
-				// check if you have returned bike
-				if (bikeReturn.isEmpty() == false) {
-					// connect interbank to deposit, if balance is not enough, reset balance
-					JsonNode result = interbankConnection.processTransaction("pay", (long) bikeService.getCategoryByBikeId(bikeId).getPrice(), "Dat coc thue xe", cardCode, owner);
-					if (result.get("errorCode").asText().equals("02")) {
-						interbankConnection.resetBalance(cardCode, owner);
-						result = interbankConnection.processTransaction("pay", (long) bikeService.getCategoryByBikeId(bikeId).getPrice(), "Dat coc thue xe", cardCode, owner);
-					}
-					if (result.get("errorCode").asText().equals("00")) {
-						// save bike rent
-						BikeRent bikeRent = new BikeRent();
-						bikeRent.setUserId(1);
-						bikeRent.setBikeId(bikeId);
-						DockHasBike bike = bikeService.getBikeByBikeId(bikeId);
-						bikeRent.setDockId(bike.getDockId());
-						bikeRent.setIsDeposited(1);
-						
-						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-						LocalDateTime now = LocalDateTime.now(); 
-						bikeRent.setRentTime(dtf.format(now).toString());
-						
-						bikeRentDao.saveBikeRent(bikeRent);
-						bikeRent = bikeRentDao.getLastBikeRent().get(0);
-						
-						// save deposit transaction
-						DepositTransaction depositTransaction = new DepositTransaction();
-						depositTransaction.setCreatedAt(dtf.format(LocalDateTime.now()).toString());
-						depositTransaction.setDepositBy("INTERBANK");
-						depositTransaction.setDescription("Dat coc thue xe");
-						depositTransaction.setMoneyAmount((long) bikeService.getCategoryByBikeId(bikeId).getPrice());
-						depositTransaction.setRentId(bikeRent.getRentId());
-						depositTransaction.setStatus("SUCCESS");
-						
-						depositTransactionDao.saveDepositTransaction(depositTransaction);
-						
-						//set this bike is inactive
-						dockHasBikeDao.updateBikeDock(bike.getDockId(), 0, bikeId, bike.getPoint());
-						
-						return "Deposit success! You can take the bike and use.";
-					} else {
-						return "Card Information Invalid";
-					}
-				} else {
-					return "You are renting. You must return the bike if you want to rent another.";
-				}
-			} else {
+			int checked = bikeService.getCurrentBikeId();
+			if (checked == -1) {
+				BikeCategory category = bike.getBikeCategory();
 				// connect interbank to deposit, if balance is not enough, reset balance
-				JsonNode result = interbankConnection.processTransaction("pay", (long) bikeService.getCategoryByBikeId(bikeId).getPrice(), "Dat coc thue xe", cardCode, owner);
+				JsonNode result = interbankConnection.processTransaction("pay", (long) category.getPrice(),
+						"Dat coc thue xe", cardCode, owner);
 				if (result.get("errorCode").asText().equals("02")) {
 					interbankConnection.resetBalance(cardCode, owner);
-					result = interbankConnection.processTransaction("pay", (long) bikeService.getCategoryByBikeId(bikeId).getPrice(), "Dat coc thue xe", cardCode, owner);
+					result = interbankConnection.processTransaction("pay", (long) category.getPrice(),
+							"Dat coc thue xe", cardCode, owner);
 				}
-				if (result.get("errorCode").asText() != "00") {
-
+				if (result.get("errorCode").asText().equals("00")) {
 					// save bike rent
 					BikeRent bikeRent = new BikeRent();
 					bikeRent.setUserId(1);
-					bikeRent.setBikeId(bikeId);
-					DockHasBike bike = bikeService.getBikeByBikeId(bikeId);
-					bikeRent.setDockId(bike.getDockId());
+					bikeRent.setBike(bike);
+					bikeRent.setDock(bike.getDock());
 					bikeRent.setIsDeposited(1);
-					
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-					LocalDateTime now = LocalDateTime.now(); 
+
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+					LocalDateTime now = LocalDateTime.now();
 					bikeRent.setRentTime(dtf.format(now).toString());
 					
 					bikeRentDao.saveBikeRent(bikeRent);
+					//query DB again to get the last record because jdbc doesn't support save and get id directly
 					bikeRent = bikeRentDao.getLastBikeRent().get(0);
-					
+
 					// save deposit transaction
 					DepositTransaction depositTransaction = new DepositTransaction();
 					depositTransaction.setCreatedAt(dtf.format(LocalDateTime.now()).toString());
 					depositTransaction.setDepositBy("INTERBANK");
 					depositTransaction.setDescription("Dat coc thue xe");
-					depositTransaction.setMoneyAmount((long) bikeService.getCategoryByBikeId(bikeId).getPrice());
-					depositTransaction.setRentId(bikeRent.getRentId());
+					depositTransaction.setMoneyAmount((long) category.getPrice());
+					depositTransaction.setRent(bikeRent);
 					depositTransaction.setStatus("SUCCESS");
-					
+
 					depositTransactionDao.saveDepositTransaction(depositTransaction);
-					
-					//set this bike is inactive
-					dockHasBikeDao.updateBikeDock(bike.getDockId(), 0, bikeId, bike.getPoint());
-					
+
+					// set this bike is inactive
+					dockHasBikeDao.updateBikeDock(bike.getDock(), 0, bike, bike.getPoint());
+
 					return "Deposit success! You can take the bike and use.";
 				} else {
 					return "Card Information Invalid";
 				}
+			} else {
+				return "You are renting. You must return the bike if you want to rent another.";
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}

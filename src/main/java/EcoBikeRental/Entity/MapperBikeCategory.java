@@ -14,6 +14,7 @@ public class MapperBikeCategory implements RowMapper<BikeCategory>{
 		bikeCategory.setDescription(rs.getString("description"));
 		bikeCategory.setPrice(rs.getInt("price"));
 		bikeCategory.setImage(rs.getString("image"));
+		bikeCategory.setCoefficient(rs.getFloat("coefficient"));
 		return bikeCategory;
 	}
 

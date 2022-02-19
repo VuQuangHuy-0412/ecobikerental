@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import EcoBikeRental.Entity.DockHasBike;
+import EcoBikeRental.Entity.Bike;
 import EcoBikeRental.Service.BikeRentService;
 import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
@@ -36,12 +36,10 @@ public class BikeRentController {
 	public ModelAndView comfirmRentBike(@RequestParam("bikeId") Integer bikeId) {
 		ModelAndView mav = new ModelAndView("rent_bike");
 		
+		Bike bike = bikeService.getBikeByBikeId(bikeId);
+		
 		//add bike detail to show to view
-		mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
-		mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
-		mav.addObject("dock", dockService.getDockByDockId(bikeService.getBikeByBikeId(bikeId).getDockId()));
-		mav.addObject("barcode", Integer.toBinaryString(bikeId));
-//		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
+		mav.addObject("bike", bike);
 		
 		return mav;
 	}
@@ -64,18 +62,14 @@ public class BikeRentController {
 	 * @return ModelAndView: Model to show to view and redirect to the view rent_bike.jsp
 	 */
 	@RequestMapping(value = "/rent-bike-with-barcode", method = RequestMethod.GET)
-	public ModelAndView rentBike(@RequestParam("barcode") String barcode) {
+	public ModelAndView rentBikeByBarcode(@RequestParam("barcode") String barcode) {
 		ModelAndView mav = new ModelAndView();
-		DockHasBike bike = bikeService.getBikeByBarcode(barcode);
+		Bike bike = bikeService.getBikeByBarcode(barcode);
 		
 		//check that you are renting bike or not
 		if (bike != null) {
 			mav.setViewName("rent_bike");
-			Integer bikeId = bike.getBikeId();
-			mav.addObject("bike", bikeService.getBikeByBikeId(bikeId));
-			mav.addObject("category", bikeService.getCategoryByBikeId(bikeId));
-			mav.addObject("dock", dockService.getDockByDockId(bikeService.getBikeByBikeId(bikeId).getDockId()));
-			mav.addObject("barcode", Integer.toBinaryString(bikeId));
+			mav.addObject("bike", bike);
 		} else {
 			mav.setViewName("not_found_bike");
 		}
@@ -91,7 +85,9 @@ public class BikeRentController {
 	public ModelAndView processRent(@RequestParam("bikeId") Integer bikeId, @RequestParam("cardCode") String cardCode, @RequestParam("owner") String owner) {
 		ModelAndView mav = new ModelAndView("process-rent");
 		
-		mav.addObject("status", bikeRentService.processRent(bikeId, cardCode, owner));
+		Bike bike = bikeService.getBikeByBikeId(bikeId);
+		
+		mav.addObject("status", bikeRentService.processRent(bike, cardCode, owner));
 		
 		return mav;
 	}

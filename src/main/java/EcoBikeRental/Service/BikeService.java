@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import EcoBikeRental.Dao.BikeCategoryDao;
 import EcoBikeRental.Dao.BikeRentDao;
 import EcoBikeRental.Dao.BikeReturnDao;
-import EcoBikeRental.Dao.DockHasBikeDao;
+import EcoBikeRental.Dao.BikeDao;
 import EcoBikeRental.Dto.NumberOfBikeCategoryDto;
 import EcoBikeRental.Entity.BikeCategory;
+import EcoBikeRental.Entity.BikeRent;
 import EcoBikeRental.Entity.BikeReturn;
-import EcoBikeRental.Entity.DockHasBike;
+import EcoBikeRental.Entity.Dock;
+import EcoBikeRental.Entity.Bike;
 
 /**
  * Description: Class Service execute the logic action of bike 
@@ -22,7 +24,7 @@ import EcoBikeRental.Entity.DockHasBike;
 @Service
 public class BikeService {
 	@Autowired
-	DockHasBikeDao dockHasBikeDao;
+	BikeDao dockHasBikeDao;
 	
 	@Autowired
 	BikeCategoryDao bikeCategoryDao;
@@ -33,17 +35,17 @@ public class BikeService {
 	@Autowired
 	BikeRentDao bikeRentDao;
 	
-	public List<DockHasBike> getListBikeByDockId(Integer dockId) {
+	public List<Bike> getListBikeByDock(Dock dock) {
 		try {
-			List<DockHasBike> listBikes = new ArrayList<DockHasBike>();
-			listBikes = dockHasBikeDao.getListBikeByDockId(dockId);
+			List<Bike> listBikes = new ArrayList<Bike>();
+			listBikes = dockHasBikeDao.getListBikeByDock(dock);
 			return listBikes;
 		} catch (Exception e) {
 			return null;
 		}
 	}
 	
-	public List<NumberOfBikeCategoryDto> getNumberBikeCategoryByDockId(Integer dockId) {
+	public List<NumberOfBikeCategoryDto> getNumberBikeCategoryByDock(Dock dock) {
 		try {
 			List<NumberOfBikeCategoryDto> listCount = new ArrayList<NumberOfBikeCategoryDto>();
 			List<BikeCategory> listCategory = bikeCategoryDao.getAllBikeCategory();
@@ -52,11 +54,11 @@ public class BikeService {
 			for (BikeCategory e : listCategory) {
 				NumberOfBikeCategoryDto numberOfBikeCategoryDto = new NumberOfBikeCategoryDto();
 				numberOfBikeCategoryDto.setBikeCategory(e);
-				List<DockHasBike> listBikes = dockHasBikeDao.getListBikeByDockId(dockId);
+				List<Bike> listBikes = dockHasBikeDao.getListBikeByDock(dock);
 				int count = 0;
 				
-				for (DockHasBike bike : listBikes) {
-					if (bike.getCategoryId() == e.getCategoryId()) {
+				for (Bike bike : listBikes) {
+					if (bike.getBikeCategory().getCategoryId() == e.getCategoryId()) {
 						count += 1;
 					}
 				}
@@ -70,9 +72,9 @@ public class BikeService {
 		}
 	}
 	
-	public DockHasBike getBikeByBikeId(Integer bikeId) {
+	public Bike getBikeByBikeId(Integer bikeId) {
 		try {
-			DockHasBike bike = dockHasBikeDao.getBikeByBikeId(bikeId);
+			Bike bike = dockHasBikeDao.getBikeByBikeId(bikeId);
 			
 			return bike;
 		} catch (Exception e) {
@@ -80,19 +82,9 @@ public class BikeService {
 		}
 	}
 	
-	public BikeCategory getCategoryByBikeId(Integer bikeId) {
+	public Bike getBikeByBarcode(String barcode) {
 		try {
-			DockHasBike bike = getBikeByBikeId(bikeId);
-			BikeCategory category = bikeCategoryDao.getCategoryById(bike.getCategoryId());
-			return category;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	public DockHasBike getBikeByBarcode(String barcode) {
-		try {
-			DockHasBike bike = dockHasBikeDao.getBikeByBarcode(barcode);
+			Bike bike = dockHasBikeDao.getBikeByBarcode(barcode);
 			
 			return bike;
 		} catch (Exception e) {
@@ -101,12 +93,13 @@ public class BikeService {
 	}
 	
 	public Integer getCurrentBikeId() {
-		if (bikeRentDao.getLastBikeRent().isEmpty() == false) {
-			List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
+		List<BikeRent> listBikeRent = bikeRentDao.getLastBikeRent();
+		if (listBikeRent.isEmpty() == false) {
+			List<BikeReturn> bikeReturn = bikeReturnDao.getBikeReturnByRentId(listBikeRent.get(0).getRentId());
 			if (bikeReturn.isEmpty() == false) {
 				return -1;
 			} else {
-				return bikeRentDao.getLastBikeRent().get(0).getBikeId();
+				return listBikeRent.get(0).getBike().getBikeId();
 			}
 		} else {
 			return -1;

@@ -33,21 +33,21 @@
                             <td class="span3">
                                 <label><b>Type</b></label>
                             </td>
-                            <td><c:out value="${ category.name }"></c:out></td>
+                            <td><c:out value="${ bike.category.name }"></c:out></td>
                         </tr>
                         
                         <tr>
                             <td class="span3">
                                 <label><b>Description</b></label>
                             </td>
-                            <td><c:out value="${ category.description }"></c:out></td>
+                            <td><c:out value="${ bike.category.description }"></c:out></td>
                         </tr>
                         
                         <tr>
                             <td class="span3">
                                 <label><b>Current Dock</b></label>
                             </td>
-                            <td><c:out value="${ dock.name }"></c:out></td>
+                            <td><c:out value="${ bike.dock.name }"></c:out></td>
                         </tr>
                         
                         <tr>
@@ -68,7 +68,7 @@
                             <td class="span3">
                                 <label><b>Deposit Money</b></label>
                             </td>
-                            <td><c:out value="${ category.price }" /> VND</td>
+                            <td><c:out value="${ bike.category.price }" /> VND</td>
                         </tr>
                         </tbody>
                         </table>

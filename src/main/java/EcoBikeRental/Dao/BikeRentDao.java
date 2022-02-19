@@ -39,10 +39,10 @@ public class BikeRentDao {
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO bike_rent (user_id, bike_id, rent_time, is_deposited, dock_id) VALUES (")
 			.append(bikeRent.getUserId()).append(",")
-			.append(bikeRent.getBikeId()).append(",'")
+			.append(bikeRent.getBike().getBikeId()).append(",'")
 			.append(bikeRent.getRentTime()).append("',")
 			.append(bikeRent.getIsDeposited()).append(",")
-			.append(bikeRent.getDockId()).append(")");
+			.append(bikeRent.getDock().getDockId()).append(")");
 		String sql = builder.toString();
 		jdbcTemplate.update(sql);
 		return bikeRent;
@@ -57,5 +57,15 @@ public class BikeRentDao {
 		String sql = "SELECT * FROM bike_rent br ORDER BY br.rent_id DESC LIMIT 1;";
 		bikeRent = jdbcTemplate.query(sql, new MapperBikeRent());
 		return bikeRent;
+	}
+	
+	public BikeRent getBikeRentById(Integer rentId) {
+		BikeRent bikeRent = new BikeRent();
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT * FROM bike_rent br where br.rent_id = ").append(rentId);
+		String sql = builder.toString();
+		bikeRent = jdbcTemplate.queryForObject(sql, new MapperBikeRent());
+		return bikeRent;
+		
 	}
 }

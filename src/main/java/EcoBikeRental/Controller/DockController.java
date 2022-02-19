@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import EcoBikeRental.Entity.Dock;
 import EcoBikeRental.Service.BikeService;
 import EcoBikeRental.Service.DockService;
 
@@ -60,9 +61,11 @@ public class DockController {
 	public ModelAndView showDockDetail(@RequestParam("dockId") Integer dockId) {
 		ModelAndView mav = new ModelAndView("dock_detail");
 		
-		mav.addObject("dock", dockService.getDockByDockId(dockId));
-		mav.addObject("listBikes", bikeService.getListBikeByDockId(dockId));
-		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDockId(dockId));
+		Dock dock = dockService.getDockByDockId(dockId);
+		
+		mav.addObject("dock", dock);
+		mav.addObject("listBikes", bikeService.getListBikeByDock(dock));
+		mav.addObject("numberOfBikeCategory", bikeService.getNumberBikeCategoryByDock(dock));
 		
 		return mav;
 	}

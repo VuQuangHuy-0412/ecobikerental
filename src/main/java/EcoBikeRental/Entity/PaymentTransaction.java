@@ -2,10 +2,10 @@ package EcoBikeRental.Entity;
 
 public class PaymentTransaction {
 	private Integer paymentTransactionId;
-	private Integer rentId;
+	private BikeRent rent;
 	private Long time; //seconds
 	private Long payment;
-	private Integer depositTransactionId;
+	private DepositTransaction depositTransaction;
 	private Long returnedMoney;
 	private String createdTime;
 
@@ -20,14 +20,6 @@ public class PaymentTransaction {
 
 	public void setPaymentTransactionId(Integer paymentTransactionId) {
 		this.paymentTransactionId = paymentTransactionId;
-	}
-
-	public Integer getRentId() {
-		return rentId;
-	}
-
-	public void setRentId(Integer rentId) {
-		this.rentId = rentId;
 	}
 
 	public Long getTime() {
@@ -46,14 +38,6 @@ public class PaymentTransaction {
 		this.payment = payment;
 	}
 
-	public Integer getDepositTransactionId() {
-		return depositTransactionId;
-	}
-
-	public void setDepositTransactionId(Integer depositTransactionId) {
-		this.depositTransactionId = depositTransactionId;
-	}
-
 	public Long getReturnedMoney() {
 		return returnedMoney;
 	}
@@ -68,5 +52,21 @@ public class PaymentTransaction {
 
 	public void setCreatedTime(String createdTime) {
 		this.createdTime = createdTime;
+	}
+
+	public BikeRent getRent() {
+		return rent;
+	}
+
+	public void setRent(BikeRent rent) {
+		this.rent = rent;
+	}
+
+	public DepositTransaction getDepositTransaction() {
+		return depositTransaction;
+	}
+
+	public void setDepositTransaction(DepositTransaction depositTransaction) {
+		this.depositTransaction = depositTransaction;
 	}
 }

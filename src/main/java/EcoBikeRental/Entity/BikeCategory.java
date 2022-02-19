@@ -6,6 +6,7 @@ public class BikeCategory {
 	private String description;
 	private Integer price;
 	private String image;
+	private Float coefficient;
 
 	public BikeCategory() {
 		super();
@@ -51,4 +52,14 @@ public class BikeCategory {
 	public void setImage(String image) {
 		this.image = image;
 	}
+
+	public Float getCoefficient() {
+		return coefficient;
+	}
+
+	public void setCoefficient(Float coefficient) {
+		this.coefficient = coefficient;
+	}
+	
+	
 }

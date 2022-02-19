@@ -15,10 +15,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import EcoBikeRental.Dao.BikeRentDao;
 import EcoBikeRental.Dao.BikeReturnDao;
 import EcoBikeRental.Dao.DepositTransactionDao;
-import EcoBikeRental.Dao.DockHasBikeDao;
+import EcoBikeRental.Dao.BikeCategoryDao;
+import EcoBikeRental.Dao.BikeDao;
 import EcoBikeRental.Dao.PaymentTransactionDao;
+import EcoBikeRental.Entity.Bike;
+import EcoBikeRental.Entity.BikeCategory;
 import EcoBikeRental.Entity.BikeRent;
 import EcoBikeRental.Entity.BikeReturn;
+import EcoBikeRental.Entity.Dock;
 import EcoBikeRental.Entity.PaymentTransaction;
 import EcoBikeRental.Subsystem.InterbankInterface;
 
@@ -30,6 +34,9 @@ import EcoBikeRental.Subsystem.InterbankInterface;
 public class BikeReturnService {
 	@Autowired
 	BikeRentDao bikeRentDao;
+	
+	@Autowired
+	BikeCategoryDao bikeCategoryDao;
 	
 	@Autowired
 	BikeReturnDao bikeReturnDao;
@@ -44,7 +51,7 @@ public class BikeReturnService {
 	PaymentTransactionDao paymentTransactionDao;
 	
 	@Autowired
-	DockHasBikeDao dockHasBikeDao;
+	BikeDao dockHasBikeDao;
 	
 	@Autowired
 	RentalFeeCalculatorInterface calculateMoney;
@@ -53,7 +60,7 @@ public class BikeReturnService {
 	 * Description: method calculate the money of a rent transaction
 	 * @return Long: money of the rent transaction
 	 */
-	public Long getPaymentAmount() {
+	public Long getPaymentAmount(BikeCategory category) {
 		try {
 			BikeRent bikeRent = bikeRentDao.getLastBikeRent().get(0);
 			
@@ -61,7 +68,7 @@ public class BikeReturnService {
 			String rentTime = bikeRent.getRentTime();
 			long allRentTime = calculateTime(rentTime);
 			
-			return calculateMoney.calculatePaymentAmount(allRentTime);
+			return calculateMoney.calculatePaymentAmount(allRentTime, category);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -77,7 +84,7 @@ public class BikeReturnService {
 	 * @param refundAmount: the refund money system give to user
 	 * @return String: status of process: success or fail
 	 */
-	public String processReturn(Integer bikeId, Integer dockId, Integer point, Long refundAmount, String cardCode, String owner) {
+	public String processReturn(Bike bike, Dock dock, Integer point, Long refundAmount, String cardCode, String owner) {
 		try {
 			JsonNode result;
 			//refund or pay more 
@@ -93,11 +100,12 @@ public class BikeReturnService {
 			
 			if (result.get("errorCode").asText() != "00") {
 				
+				BikeRent bikeRent = bikeRentDao.getLastBikeRent().get(0);
 				//save bike return
 				BikeReturn bikeReturn = new BikeReturn();
-				bikeReturn.setDockId(dockId);
+				bikeReturn.setDock(dock);
 				bikeReturn.setIsPaid(1);
-				bikeReturn.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
+				bikeReturn.setRent(bikeRent);
 				
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
 				LocalDateTime now = LocalDateTime.now(); 
@@ -108,16 +116,16 @@ public class BikeReturnService {
 				//save payment transaction
 				PaymentTransaction paymentTransaction = new PaymentTransaction();
 				paymentTransaction.setCreatedTime(dtf.format(now).toString());
-				paymentTransaction.setDepositTransactionId(depositTransactionDao.getDepositTransactionByRentId(bikeRentDao.getLastBikeRent().get(0).getRentId()).getDepositTransactionId());
-				paymentTransaction.setPayment(getPaymentAmount());
-				paymentTransaction.setRentId(bikeRentDao.getLastBikeRent().get(0).getRentId());
+				paymentTransaction.setDepositTransaction(depositTransactionDao.getDepositTransactionByRentId(bikeRent.getRentId()));
+				paymentTransaction.setPayment(getPaymentAmount(bike.getBikeCategory()));
+				paymentTransaction.setRent(bikeRent);
 				paymentTransaction.setReturnedMoney(refundAmount);
-				paymentTransaction.setTime(calculateTime(bikeRentDao.getLastBikeRent().get(0).getRentTime()));
+				paymentTransaction.setTime(calculateTime(bikeRent.getRentTime()));
 				
 				paymentTransactionDao.savePaymentTransaction(paymentTransaction);
 				
 				//update dock_has_bike
-				dockHasBikeDao.updateBikeDock(dockId, 1, bikeId, point);
+				dockHasBikeDao.updateBikeDock(dock, 1, bike, point);
 				
 				return "Pay and return bike success!";
 			} else {
